@@ -1,0 +1,77 @@
+/* styles/navbar.css */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #e81010;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 30px 30px;
+}
+
+.navbar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.navbar-toggler {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: none; /* Ocultar por defecto en pantallas grandes */
+}
+
+.navbar-icon {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: whitesmoke;
+    margin: 4px 0;
+}
+
+.navbar-menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-menu li {
+    padding: 10px 20px;
+}
+
+/* Ajustar color y tamaño del texto */
+.navbar-menu li a {
+    color: whitesmoke; /* Color de texto blanco */
+    font-size: 18px; /* Tamaño de texto más grande */
+    text-decoration: none; /* Sin subrayado en los enlaces */
+}
+
+/* Media Queries para el menú responsivo */
+@media (max-width: 768px) {
+    .navbar-menu {
+        display: none; /* Ocultar menú por defecto en pantallas pequeñas */
+        flex-direction: column;
+        width: 100%;
+        background-color: #e81010;
+        position: absolute;
+        top: 50px; /* Alineación debajo del navbar */
+        left: 0;
+    }
+
+    .navbar-menu.open {
+        display: flex; /* Mostrar menú si está abierto */
+    }
+
+    .navbar-toggler {
+        display: block; /* Mostrar el botón de hamburguesa en pantallas pequeñas */
+    }
+
+    .navbar-menu li a {
+        font-size: 20px; /* Tamaño de texto más grande en pantallas pequeñas */
+    }
+}
