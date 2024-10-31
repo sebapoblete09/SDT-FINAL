@@ -1,0 +1,92 @@
+.About-us{
+    padding-top: 50%;
+}
+.history-container {
+    display: flex; /* Usamos flexbox para alinear los elementos */
+    align-items: center; /* Centra verticalmente los elementos */
+    gap: 20px; /* Espacio entre imagen y texto */
+}
+
+.history-image {
+    flex: 1; /* Permite que la imagen tome el 50% del espacio */
+}
+
+.history-text {
+    flex: 1.7; /* Permite que el texto tome más espacio que la imagen */
+    text-align: justify;
+    padding-right: 15px;
+}
+
+/* Ajustes adicionales para la imagen */
+.history-image img {
+    width: 100%; /* Se adapta al contenedor */
+    max-width: 500px; /* Controla el tamaño máximo de la imagen */
+    height: auto; /* Mantiene la proporción de la imagen */
+    border-radius: 10px; /* Si deseas bordes redondeados */
+    margin-left: 10px;
+}
+
+/* Estilo existente para la sección de historia */
+.History {
+    background-color: #555;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: whitesmoke;
+}
+
+
+
+/*fundadores*/
+.members-section {
+    padding: 40px;
+    text-align: center;
+    background-color: #202020;
+    color: whitesmoke;
+}
+
+.members-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.member-card {
+    background-color: #323232;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    text-align: center;
+}
+
+.member-card:hover {
+    transform: scale(1.05);
+}
+
+.member-image {
+    width: 100%;
+    height: auto;
+    max-width: 150px;
+    border-radius: 50%;
+}
+
+.member-card h3 {
+    margin: 10px 0 5px;
+    font-size: 1.5em;
+    color: #e81010;
+}
+
+.member-card p {
+    font-size: 1em;
+    color: whitesmoke;
+}
+
+#team {
+    background-color: #202020;
+    padding: 40px;
+    text-align: center;
+}

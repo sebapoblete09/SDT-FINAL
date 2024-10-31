@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/navbar.css'; // Asegúrate de crear este archivo para los estilos
+//import '../styles/Home.css'; // Asegúrate de crear este archivo para los estilos
 
 function Home() {
   return (
