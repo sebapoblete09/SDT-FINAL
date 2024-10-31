@@ -1,0 +1,75 @@
+body  {
+  display: flex; /* Usar flexbox para centrar */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  height: 100vh; /* Altura de la ventana completa */
+  margin: 0; /* Sin margen en el body */
+
+}
+
+.container-form {
+  max-width: 500px; /* Limita el ancho máximo del formulario */
+  width: 100%; /* Permitir que el formulario se ajuste al ancho máximo */
+  padding: 20px; /* Espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+  background-color: #e81010;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+  margin-top: 15%;
+}
+
+h2 {
+  text-align: center; /* Centra el texto */
+  color: whitesmoke; /* Color del texto */
+}
+
+.form-group {
+  margin-bottom: 20px; /* Espaciado entre los campos */
+  text-align: center;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="tel"] {
+  width: 90%; /* Ocupa todo el ancho del contenedor */
+  padding: 10px; /* Espaciado interno del campo */
+  border: 1px solid #ccc; /* Borde del campo */
+  border-radius: 10px; /* Bordes redondeados */
+  font-size: 16px; /* Tamaño de fuente */
+  margin-bottom: 15px;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus,
+input[type="tel"]:focus {
+  border-color: #007bff; /* Color del borde al enfocar */
+  outline: none; /* Sin contorno */
+}
+
+.btns {
+  display: flex; /* Muestra los botones en fila */
+  justify-content: space-between; /* Espaciado entre botones */
+  margin-top: 15px; /* Espacio superior para separar de los campos de entrada */
+}
+
+button {
+  padding: 10px 15px; /* Espaciado interno del botón */
+  border: none; /* Sin borde */
+  border-radius: 4px; /* Bordes redondeados */
+  color: white; /* Color del texto */
+  cursor: pointer; /* Cambia el cursor al pasar el ratón */
+  font-size: 16px; /* Tamaño de fuente */
+  flex: 1; /* Permite que los botones se expandan por igual */
+  margin: 0 5px; /* Espacio horizontal entre botones */
+}
+
+button:hover {
+  background-color: #746743; /* Color al pasar el ratón */
+}
+
+span {
+  display: block; /* Separa el texto de la cabecera */
+  text-align: center; /* Centra el texto */
+  margin-bottom: 20px; /* Espaciado inferior */
+}
