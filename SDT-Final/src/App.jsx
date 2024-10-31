@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './Components/NavBar'; // Importa el Navbar
 import Home from './Components/Home';
 import About from './Components/About';
+import Reserva from './Components/Reserva';
 import Login from './Components/Login';
 // Importa otros componentes aquí
 
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sobre-nosotros" element={<About />} />
+        <Route path="/reservar" element={<Reserva />} />
         <Route path="/iniciar-sesion" element={<Login />} />
         {/* Agrega más rutas aquí */}
       </Routes>

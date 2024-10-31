@@ -1,0 +1,146 @@
+.reservation{
+    background-color:#323232; /* Fondo del formulario */
+    padding: 15px;
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra */
+    margin: 60px auto 20px auto; /* Margen superior más grande para separarlo del navbar */
+    max-width: 500px; /* Ancho máximo */
+    margin-top: 20%;
+}
+
+h1{
+    font-size: 3em;
+    text-align: center;
+    padding: 5px;
+}
+
+h3{
+    font-size: 1.5em;
+    text-align: center;
+    padding: 20px;
+}
+
+p {
+    font-size: 1.24em;
+}
+
+#mesa-container {
+    text-align: center; /* Centra el contenido de texto */
+}
+
+#mesas {
+    display: grid; /* Cambia de flex a grid */
+    grid-template-columns: repeat(3, 1fr); /* Dos filas de tres columnas */
+    gap: 10px; /* Espacio entre las mesas */
+    max-width: 600px; /* Limita el ancho total del contenedor */
+    margin: 0 auto; /* Centra el contenedor de mesas */
+    padding-bottom: 20px;
+}
+
+#mesa-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centra el número de la mesa vertical y horizontalmente */
+    width: 100px; /* Ancho de las mesas */
+    height: 100px; /* Alto de las mesas */
+    border: 2px solid #ccc;
+    border-radius: 50%; /* Forma circular */
+    background-color: #746743;
+    font-size: 30px;
+    transition: background-color 0.3s;
+}
+
+#mesa-btn:hover {
+    background-color: #e81010; /* Color de fondo al pasar el ratón */
+    color: white; /* Color del texto al pasar el ratón */
+}
+
+
+form {
+    display: flex;
+    flex-direction: column; /* Organiza los elementos en columna */
+}
+
+label {
+    margin-bottom: 2px; /* Espaciado entre etiqueta y campo */
+    font-weight: bold; /* Texto en negrita */
+}
+
+input, select {
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #e81010; /* Borde del campo */
+    border-radius: 5px; /* Esquinas redondeadas */
+    margin-bottom: 15px; /* Espaciado entre campos */
+    background-color: #323232; /* Fondo del campo */
+    color: whitesmoke; /* Color del texto */
+}
+
+#elegir-mesa, #volver, #confirmar-mesa{
+    padding: 12px; /* Espaciado interno */
+    background-color: #e81010; /* Color de fondo del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    color: whitesmoke; /* Color del texto */
+    font-weight: bold; /* Texto en negrita */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s; /* Transición suave */
+}
+
+#elegir-mesa:hover, #volver:hover, #confirmar-mesa:hover {
+    background-color: #323232; /* Color al pasar el ratón */
+    color: #e81010; /* Color del texto al pasar el ratón */
+}
+
+/*Mis reservas*/
+/* Contenedor principal para la lista de reservas */
+.reservation-list {
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #202020;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+  
+.reservation-list h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: whitesmoke;
+}
+  
+/* Estilo de cada reserva */
+.reservation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 2px solid red;
+}
+  
+.reservation-item:last-child {
+    border-bottom: none; /* Elimina la línea roja para el último elemento */
+}
+  
+.reservation-info {
+    font-size: 16px;
+    color: whitesmoke;
+}
+  
+/* Estilo del botón de cancelar */
+.delete-button {
+    padding: 6px 12px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-left: auto; /* Alínea el botón a la derecha */
+    width: auto; /* Reduce el ancho del botón */
+}
+
+.delete-button:hover {
+    background-color: #d93636;
+}
