@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect,} from 'react';
-import { collection, addDoc, doc, getDoc } from 'firebase/firestore'; 
+import { collection, addDoc, doc, getDoc, serverTimestamp  } from 'firebase/firestore'; 
 import { db } from '../firebase/firebaseconfig'; 
 import horas from '../const/horas';
 import '../styles/reserva.css'; // Asegúrate de crear este archivo para los estilos
@@ -73,6 +73,7 @@ function Reserva() {
           fecha: fecha, // Usar referencia
           horario: horario, // Usar referencia
           mesa: mesaSeleccionada, // Utiliza la mesa seleccionada
+          createdAt: serverTimestamp() // Agregar el timestamp aquí
         });
         alert("Reservación confirmada con éxito!");
       } catch (error) {

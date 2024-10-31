@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { collection, query, where, getDocs, updateDoc, doc, } from 'firebase/firestore';
 import { db } from '../firebase/firebaseconfig';
 import '../styles/reserva.css';
 
@@ -18,8 +18,9 @@ function VerReservas() {
         
         // Mapear y ordenar las reservas de más recientes a más antiguas
         const userReservas = querySnapshot.docs
-        .map(doc => ({ id: doc.id, ...doc.data() }))
-        .sort((a, b) => b.id.localeCompare(a.id)); // Ordenar por ID (última reserva primero)
+          .map(doc => ({ id: doc.id, ...doc.data() }))
+          .sort((a, b) => new Date(b.fecha) - new Date(a.fecha)); // Ordenar por fecha
+
         setReservas(userReservas);
       } catch (error) {
         console.error("Error al obtener las reservas: ", error);
