@@ -4,6 +4,7 @@ import Navbar from './Components/NavBar'; // Importa el Navbar
 import Home from './Components/Home';
 import About from './Components/About';
 import Reserva from './Components/Reserva';
+import VerReservas from './Components/VerReservas';
 import Login from './Components/Login';
 // Importa otros componentes aquí
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/sobre-nosotros" element={<About />} />
         <Route path="/reservar" element={<Reserva />} />
+        <Route path='/mis-reservas' element={<VerReservas/>}/>
         <Route path="/iniciar-sesion" element={<Login />} />
         {/* Agrega más rutas aquí */}
       </Routes>
