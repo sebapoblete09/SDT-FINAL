@@ -1,5 +1,6 @@
 // Login.jsx
 import React, { useState } from 'react';
+import { useNavigate,  } from 'react-router-dom';
 import { auth } from '../firebase/firebaseconfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore'; 
@@ -15,6 +16,7 @@ function Login() {
   const [apellido, setApellido] = useState('');
   const [telefono, settelefono] = useState('');
   const [isGoogleUser, setIsGoogleUser] = useState(false);
+  const Navigate = useNavigate()
   
 
   const handleRegisterClick = () => {
@@ -52,6 +54,7 @@ function Login() {
       console.log("Token guardado en localStorage:", token);
       console.log("Inicio de sesión exitoso");
       alert("Inicio de sesion Exitoso"); // Mensaje de éxito
+      Navigate('/reservar');
       window.location.reload();  
       
     } catch (error) {
@@ -119,6 +122,7 @@ function Login() {
         console.log("Token guardado en localStorage:", token);
         console.log("Inicio de sesión con Google exitoso:", result.user);
         alert("Inicio de sesión exitoso");
+        Navigate('/reservar');
 
         const userRef = doc(db, 'clientes', user.uid);
         const docSnap = await getDoc(userRef);
@@ -128,7 +132,6 @@ function Login() {
             setIsGoogleUser(true); // Muestra el formulario para ingresar el número de teléfono
         } else {
             // Si el usuario ya existe, no pide el teléfono
-            alert("Inicio de sesión exitoso");
             window.location.reload(); // Recarga para acceder al sistema
         }
     } catch (error) {

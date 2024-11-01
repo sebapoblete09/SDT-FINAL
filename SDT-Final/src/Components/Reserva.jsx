@@ -3,6 +3,7 @@ import { useState, useEffect,} from 'react';
 import { collection, addDoc, doc, getDoc, serverTimestamp  } from 'firebase/firestore'; 
 import { db } from '../firebase/firebaseconfig'; 
 import horas from '../const/horas';
+import Login from './Login';
 import '../styles/reserva.css'; // Asegúrate de crear este archivo para los estilos
 
 function Reserva() {
@@ -147,7 +148,7 @@ function Reserva() {
         </div>
       ) : (
         // Si no está autenticado, muestra el mensaje de inicio de sesión
-        <p>Por favor, inicia sesión para hacer una reserva.</p>
+        <Login/>
       )}
         
     </main>
