@@ -58,7 +58,7 @@ function Menu() {
 
         {/* Botón de descargar menú */}
       <div className="downloadMenu-container">
-        <a href="/menu.pdf" className="downloadMenu" target="_blank" rel="noopener noreferrer">
+        <a href="/src/menu/Menu.pdf" download="Sabores_De_La_Tierra.pdf" className="downloadMenu" target="_blank" rel="noopener noreferrer">
           Descargar Menú
         </a>
       </div>

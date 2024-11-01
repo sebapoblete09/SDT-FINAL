@@ -1,0 +1,239 @@
+
+.home{
+
+}
+h1 {
+    font-size: 4.5em;
+}
+
+h2 {
+    font-size: 2.7em;
+    color: whitesmoke;
+}
+
+h3 {
+    font-size: 2em;
+}
+
+p {
+    font-size: 1.24em;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+}
+
+
+
+.button {
+    font-size: 1.3em;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: 1px solid rgb(0, 0, 0.5);
+    box-shadow: 2px 2px 10px rgb(0, 0, 0.5);
+    color: whitesmoke;
+    background-color: #e81010;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+.button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+}
+
+.button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+}
+
+.button:hover span {
+    padding-right: 25px;
+    transition: 0.5s;
+}
+
+.button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.button:hover {
+    background-color: #323232;
+    color: #e81010;
+}
+
+#hero {
+    padding-top: 50%;
+    margin: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    height: 100vh;
+    color: whitesmoke;
+    background-image: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.5),
+        rgb(0, 0, 0, 0.5)
+    ),
+    url("/src/img/Cazuela-Dia-Cocina-Chilena-.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#hero h1 {
+    margin-bottom: 10px; /* Ajusta este valor para reducir el espacio */
+}
+
+#hero h2 {
+    margin-top: 20px;
+    margin-bottom: 100px; /* Ajusta este valor para reducir el espacio */
+}
+
+#About-us {
+    padding: 2rem;
+    background-color: #323232;
+    height: auto; /* Permite que la altura se ajuste al contenido */
+    background-image: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.5),
+        rgb(0, 0, 0, 0.5)
+    ),
+    url("/src/img/Cocineros.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;  
+    text-align: center;  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+#About-us p{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    color:#746743;
+    padding: 5px;
+    font-size: small;
+    text-align: justify;
+
+}
+
+.Card {
+    background-color: #323232;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px; /* Espacio entre tarjetas */
+    flex: 1; /* Asegura que todas las tarjetas tengan el mismo tamaño */
+    max-width: 300px; /* Ajusta el tamaño máximo de las tarjetas */
+    height: 450px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+}
+
+
+.Info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px; 
+}
+
+.button-container .button {
+    margin-left: 0; /* Elimina el margen a la izquierda si lo deseas */
+}
+
+
+.Esencia h3{
+    color: #e81010;
+    margin: 10px 0; 
+    font-size: 25px;
+}
+
+.Lugar h3{
+    color: #4212f2;
+    margin: 10px 0; 
+    font-size: 25px;
+}
+
+.Especialidad h3{
+    color:whitesmoke;
+    margin: 10px 0; 
+    font-size: 25px;
+}
+
+
+
+#events-news {
+    padding: 2rem;
+    background-color: #323232;
+    color: whitesmoke;
+}
+
+.news-section {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.news-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.news-item {
+    background-color: #202020;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    width: 250px;
+}
+
+.news-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.news-item h3 {
+    margin-top: 15px;
+    font-size: 1.5em;
+    color: #e81010;
+}
+
+.news-item p {
+    margin-top: 10px;
+    font-size: 1em;
+}
+
+
+#Adm_reserva {
+    padding-top: 20px;
+    justify-content: center;
+    background-color: #202020;
+    display: flex;
+    gap:20px
+}
+
