@@ -46,6 +46,7 @@ function About() {
 
       <section className='Members'>
         <div className="members-section">
+          <h2>Fundadores</h2>
           <div className="members-container">
             {members.map(member => (
             <div key={member.id} className="member-card">

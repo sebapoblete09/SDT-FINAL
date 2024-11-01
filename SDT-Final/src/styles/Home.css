@@ -1,30 +1,25 @@
-
 .home{
-
-}
-h1 {
-    font-size: 4.5em;
+    padding-top: 70%;
 }
 
-h2 {
-    font-size: 2.7em;
-    color: whitesmoke;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Evita que el padding o el border añadan tamaño extra */
 }
 
-h3 {
-    font-size: 2em;
+/* Para asegurar que las imágenes normales ocupen el ancho total */
+img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
-p {
-    font-size: 1.24em;
+/* Estilo para contenedores que deben ocupar todo el ancho */
+body, html, .main-container, #hero, #About-us, #events-news {
+    width: 100vw; /* Ocupa todo el ancho de la ventana */
+    overflow-x: hidden; /* Evita scroll horizontal */
 }
-
-.container {
-    max-width: 1400px;
-    margin: auto;
-}
-
-
 
 .button {
     font-size: 1.3em;
@@ -70,121 +65,85 @@ p {
 }
 
 #hero {
-    padding-top: 50%;
-    margin: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     flex-direction: column;
     height: 100vh;
+    width: 100%;
     color: whitesmoke;
     background-image: linear-gradient(
         0deg,
-        rgba(0, 0, 0, 0.5),
-        rgb(0, 0, 0, 0.5)
+        rgba(0, 0, 0, 0.7),
+        rgb(0, 0, 0, 0.7)
     ),
     url("/src/img/Cazuela-Dia-Cocina-Chilena-.jpg");
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size:cover;
+    overflow-y: hidden;
 }
 
 #hero h1 {
     margin-bottom: 10px; /* Ajusta este valor para reducir el espacio */
+    margin: 0;
+    padding-top: 120px;
+    font-size: 4em;
 }
 
 #hero h2 {
     margin-top: 20px;
-    margin-bottom: 100px; /* Ajusta este valor para reducir el espacio */
+    padding-bottom: 100px; /* Ajusta este valor para reducir el espacio */
+    font-size: 2em;
 }
-
-#About-us {
-    padding: 2rem;
-    background-color: #323232;
-    height: auto; /* Permite que la altura se ajuste al contenido */
-    background-image: linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.5),
-        rgb(0, 0, 0, 0.5)
-    ),
-    url("/src/img/Cocineros.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;  
-    text-align: center;  
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-#About-us p{
-    font-family:Georgia, 'Times New Roman', Times, serif;
-    color:#746743;
-    padding: 5px;
-    font-size: small;
-    text-align: justify;
-
-}
-
-.Card {
-    background-color: #323232;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 15px; /* Espacio entre tarjetas */
-    flex: 1; /* Asegura que todas las tarjetas tengan el mismo tamaño */
-    max-width: 300px; /* Ajusta el tamaño máximo de las tarjetas */
-    height: 450px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; 
-}
-
-
-.Info {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-    max-width: 1200px;
-}
-
 
 .button-container {
     display: flex;
     justify-content: center;
-    width: 100%;
-    margin-top: 10px; 
-}
+    width: 100%; 
 
-.button-container .button {
-    margin-left: 0; /* Elimina el margen a la izquierda si lo deseas */
-}
-
-
-.Esencia h3{
-    color: #e81010;
-    margin: 10px 0; 
-    font-size: 25px;
-}
-
-.Lugar h3{
-    color: #4212f2;
-    margin: 10px 0; 
-    font-size: 25px;
-}
-
-.Especialidad h3{
-    color:whitesmoke;
-    margin: 10px 0; 
-    font-size: 25px;
 }
 
 
 
-#events-news {
+
+#About-us{
+    padding: 2rem;
+    color: whitesmoke;
+    background-image: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.6),
+        rgb(0, 0, 0, 0.6)
+    ),
+    url("/src/img/Cocineros.jpg");
+    background-repeat: no-repeat;
+    background-size: cover; 
+
+}
+
+.Au-section{
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.AboutUs-Container{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.Card{
+
+    background-color: #202020;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    width: 400px;
+    text-align: justify;
+}
+
+#events-news{
     padding: 2rem;
     background-color: #323232;
     color: whitesmoke;
@@ -232,8 +191,10 @@ p {
 #Adm_reserva {
     padding-top: 20px;
     justify-content: center;
-    background-color: #202020;
     display: flex;
     gap:20px
 }
 
+li{
+    list-style: none;
+}
