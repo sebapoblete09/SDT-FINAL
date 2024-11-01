@@ -59,7 +59,7 @@ function Login() {
       
     } catch (error) {
       if (error.code === 'auth/user-not-found') {
-        alert("Usuario no registrado. Regístrate primero.");
+        alert("Usuario no registrado. Porfavor regístrate primero.");
       } else if (error.code === 'auth/wrong-password') {
         alert("Contraseña incorrecta.");
       } else {
@@ -96,6 +96,7 @@ function Login() {
       setCorreo('');
       setContraseña('');
 
+
       console.log("Registro exitoso:", userCredential.user);
       alert("Registro exitoso! Bienvenido, " + nombre); // Mensaje de éxito
       setNombre('');
@@ -103,6 +104,7 @@ function Login() {
       settelefono('');
       setCorreo('');
       setContraseña('');
+
     } catch (error) {
       console.error("Error al registrarse:", error.message);
       alert(`Error al registrarse: ${error.message}`); // Muestra un mensaje al usuario
