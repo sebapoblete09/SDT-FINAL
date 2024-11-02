@@ -65,7 +65,7 @@ function VerReservasAdmin() {
               {reservas.slice(currentIndex, currentIndex + reservasPorPagina).map(reserva => (
                 <div key={reserva.id} className="reservation-item">
                   <div className="reservation-info">
-                    <p><strong>Cliente:</strong> {reserva.nombre } {reserva.apelldio} </p>
+                    <p><strong>Cliente:</strong> {reserva.nombre }</p>
                     <p><strong>Correo:</strong> {reserva.correo}</p>
                     <p><strong>Fecha:</strong> {reserva.fecha}</p>
                     <p><strong>Horario:</strong> {reserva.horario}</p>

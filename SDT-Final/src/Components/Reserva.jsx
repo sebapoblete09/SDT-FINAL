@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect,} from 'react';
-import { collection, addDoc, doc, getDoc, serverTimestamp  } from 'firebase/firestore'; 
+import { collection, addDoc, doc, getDocs, serverTimestamp, where, query , getDoc} from 'firebase/firestore'; 
 import { db } from '../firebase/firebaseconfig'; 
 import horas from '../const/horas';
 import Login from './Login';
@@ -15,9 +15,29 @@ function Reserva() {
   const [grupo, setGrupo] = useState(null);
   const [fecha, setFecha] = useState(null);
   const [horario, setHorario] = useState(null);
+  const [mesasOcupadas, setMesasOcupadas] = useState([]); // Estado para mesas ocupadas
   const mesas = [1, 2, 3, 4, 5, 6];
   const today = new Date().toISOString().split('T')[0];
 
+  useEffect(() => {
+    // Verificar mesas ocupadas cuando se selecciona una fecha y horario
+    const fetchMesasOcupadas = async () => {
+      if (fecha && horario) {
+        const reservasRef = collection(db, "reservas");
+        const q = query(reservasRef, where("fecha", "==", fecha), where("horario", "==", horario), where("estado", "==", "Confirmada"));
+        const querySnapshot = await getDocs(q);
+        const ocupadas = [];
+        querySnapshot.forEach((doc) => {
+          ocupadas.push(doc.data().mesa);
+        });
+        setMesasOcupadas(ocupadas);
+      }else{
+        setMesasOcupadas([]);
+      }
+    };
+    
+    fetchMesasOcupadas();
+  }, [fecha, horario]);
 
   useEffect(() => {
     const fetchUsuario = async (uid) => {
@@ -68,8 +88,7 @@ function Reserva() {
         await addDoc(collection(db, "reservas"), {
           uid: uid,
           estado: "Confirmada",
-          nombre: usuario.nombre ,
-          apelldio:usuario.apellido, // Usa el nombre del usuario autenticado
+          nombre: usuario.nombre, // Usa el nombre del usuario autenticado
           correo: usuario.correo, // Usa el correo del usuario autenticado
           telefono: usuario.telefono, // Usa el teléfono del usuario autenticado
           grupo: grupo, // Usar referencia
@@ -95,7 +114,7 @@ function Reserva() {
             <>
               <form>
                 <h1>¡Reserva ahora!</h1>
-                <p>Nombre: {usuario.nombre} {usuario.apellido}</p>
+                <p>Nombre: {usuario.nombre}</p>
                 <p>Correo: {usuario.correo}</p>
                 <p>Teléfono: {usuario.telefono}</p>
 
@@ -132,9 +151,14 @@ function Reserva() {
                 <h3>Elige una mesa</h3>
                 <div id='mesas'>
                   {mesas.map(mesa => (
-                    <button key={mesa} id='mesa-btn' onClick={() => handleSeleccionarMesa(mesa)}>
-                      {mesa}
-                    </button>
+                    <button key={mesa} id='mesa-btn' onClick={() => handleSeleccionarMesa(mesa)} 
+                    style={{
+                      backgroundColor: mesasOcupadas.includes(mesa) ? 'red' : (mesaSeleccionada === mesa ? 'green' : '#746743')
+                    }}
+                    disabled={mesasOcupadas.includes(mesa)} // Desactiva el botón si está ocupada
+                  >
+                    {mesa}
+                  </button>
                   ))}
                 </div>
                 {mesaSeleccionada && (

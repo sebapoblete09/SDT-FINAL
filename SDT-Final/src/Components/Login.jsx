@@ -1,9 +1,9 @@
 // Login.jsx
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { useNavigate,  } from 'react-router-dom';
 import { auth } from '../firebase/firebaseconfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore'; 
+import { doc, setDoc, getDoc, addDoc } from 'firebase/firestore'; 
 import { db } from '../firebase/firebaseconfig'; 
 import '../styles/login.css';
 
@@ -17,6 +17,8 @@ function Login() {
   const [telefono, settelefono] = useState('');
   const [isGoogleUser, setIsGoogleUser] = useState(false);
   const Navigate = useNavigate()
+
+  
   
 
   const handleRegisterClick = () => {
@@ -86,25 +88,71 @@ function Login() {
         const role = docSnap.data().rol;
         localStorage.setItem('role', role);
       } else {
-        const adminRef = doc(db, 'Administrador', user.uid);
+        const adminRef = doc(db, 'administrador', user.uid);
         const adminSnap = await getDoc(adminRef);
 
         if (adminSnap.exists()) {
           const role = adminSnap.data().rol;
           localStorage.setItem('role', role);
         } else {
-          setIsGoogleUser(true);
+          // Usuario nuevo de Google
+          setIsGoogleUser(true); // Esto activará el formulario para ingresar más datos
+            return;
         }
       }
 
       const token = await user.getIdToken();
       localStorage.setItem('token', token);
       localStorage.setItem('uid', user.uid);
-      alert("Inicio de sesión exitoso");
-      Navigate('/');
-      window.location.reload();
+
+      if (!isGoogleUser) {
+        alert("Inicio de sesión exitoso");
+        Navigate('/');
+        window.location.reload();
+      }
     } catch (error) {
       console.error("Error al iniciar sesión con Google:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    const checkIfGoogleUserDataExists = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, 'clientes', user.uid);
+        const docSnap = await getDoc(userRef);
+        if (!docSnap.exists()) {
+          setIsGoogleUser(true);
+        }
+      }
+    };
+    if (isGoogleUser) checkIfGoogleUserDataExists();
+  }, [isGoogleUser]);
+
+  const handleGoogleUserData = async (e) => {
+    e.preventDefault();
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, 'clientes', user.uid);
+        await setDoc(
+          userRef,
+          {
+            nombre: user.displayName,
+            correo: user.email,
+            telefono: telefono,
+            rol: 'cliente',
+          },
+          { merge: true }
+        );
+        alert("Datos adicionales guardados exitosamente.");
+        setIsGoogleUser(false);
+        settelefono('');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error al guardar los datos del usuario:", error.message);
+      alert(`Error al guardar los datos: ${error.message}`);
     }
   };
 
@@ -120,11 +168,12 @@ function Login() {
       await sendEmailVerification(user);
       alert("¡Registro exitoso! Se ha enviado un correo de verificación. Por favor, verifica tu correo.");
 
+      // Concatenar nombre y apellido para almacenarlos en un solo campo
+      const nombreCompleto = `${nombre} ${apellido}`;
       // Aquí guardamos la información adicional en Firestore
       const userRef = doc(db, 'clientes', user.uid); // Crea una referencia a un documento en Firestore usando el UID del usuario
       await setDoc(userRef, {
-      nombre,
-      apellido,
+      nombre: nombreCompleto,
       correo,
       telefono,
       rol: 'cliente'
@@ -138,7 +187,6 @@ function Login() {
 
 
       console.log("Registro exitoso:", userCredential.user);
-      alert("Registro exitoso! Bienvenido, " + nombre); // Mensaje de éxito
       setNombre('');
       setApellido('');
       settelefono('');
@@ -151,35 +199,6 @@ function Login() {
     }
   };
   
- 
-
-const handleGoogleUserData = async (e) => {
-    e.preventDefault();
-    try {
-        const user = auth.currentUser;
-        if (user) {
-            const userRef = doc(db, 'clientes', user.uid);
-            await setDoc(
-                userRef,
-                {
-                    nombre: user.displayName,
-                    correo: user.email,
-                    telefono: telefono, // Teléfono del formulario
-                },
-                { merge: true } // Usa merge para no sobrescribir campos existentes
-            );
-            console.log("Datos del usuario guardados exitosamente en Firestore");
-            alert("Datos adicionales guardados exitosamente.");
-            setIsGoogleUser(false); // Oculta el formulario después de guardar
-            settelefono(''); // Limpia el campo del teléfono
-            window.location.reload(); // Recarga la página
-        }
-    } catch (error) {
-        console.error("Error al guardar los datos del usuario:", error.message);
-        alert(`Error al guardar los datos: ${error.message}`);
-    }
-};
-
   return (
     <div className='container-form'>
       {isLoginVisible ? (
