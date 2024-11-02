@@ -29,43 +29,82 @@ function Login() {
 
   //logica login
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+    e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, correo, contraseña);
-
-      // Obtiene el usuario
       const user = userCredential.user;
 
-      // Verifica si el correo está confirmado
-    if (!user.emailVerified) {
-      alert("Por favor, verifica tu correo electrónico antes de iniciar sesión.");
-      return; // Sale de la función si el correo no está verificado
-    }
+      if (!user.emailVerified) {
+        alert("Por favor, verifica tu correo electrónico antes de iniciar sesión.");
+        return;
+      }
 
+      const userRef = doc(db, 'clientes', user.uid);
+      const docSnap = await getDoc(userRef);
 
-      // Obtiene el UID del usuario
-      const uid = user.uid;
-      // Obtiene el token de acceso
+      if (docSnap.exists()) {
+        const role = docSnap.data().rol;
+        localStorage.setItem('role', role);
+      } else {
+        const adminRef = doc(db, 'administrador', user.uid);
+        const adminSnap = await getDoc(adminRef);
+
+        if (adminSnap.exists()) {
+          const role = adminSnap.data().rol;
+          localStorage.setItem('role', role);
+        }
+      }
+
       const token = await user.getIdToken();
-
-      // Guarda el token en localStorage o sessionStorage
       localStorage.setItem('token', token);
-      localStorage.setItem('uid', uid);
-      console.log("Token guardado en localStorage:", token);
-      console.log("Inicio de sesión exitoso");
-      alert("Inicio de sesion Exitoso"); // Mensaje de éxito
-      Navigate('/reservar');
-      window.location.reload();  
-      
+      localStorage.setItem('uid', user.uid);
+      alert("Inicio de sesión exitoso");
+      Navigate('/');
+      window.location.reload();
     } catch (error) {
       if (error.code === 'auth/user-not-found') {
-        alert("Usuario no registrado. Porfavor regístrate primero.");
+        alert("Usuario no registrado. Por favor regístrate primero.");
       } else if (error.code === 'auth/wrong-password') {
         alert("Contraseña incorrecta.");
       } else {
         console.error("Error al iniciar sesión:", error);
         alert(`Error al iniciar sesión: ${error.message}`);
       }
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      const userRef = doc(db, 'clientes', user.uid);
+      const docSnap = await getDoc(userRef);
+
+      if (docSnap.exists()) {
+        const role = docSnap.data().rol;
+        localStorage.setItem('role', role);
+      } else {
+        const adminRef = doc(db, 'Administrador', user.uid);
+        const adminSnap = await getDoc(adminRef);
+
+        if (adminSnap.exists()) {
+          const role = adminSnap.data().rol;
+          localStorage.setItem('role', role);
+        } else {
+          setIsGoogleUser(true);
+        }
+      }
+
+      const token = await user.getIdToken();
+      localStorage.setItem('token', token);
+      localStorage.setItem('uid', user.uid);
+      alert("Inicio de sesión exitoso");
+      Navigate('/');
+      window.location.reload();
+    } catch (error) {
+      console.error("Error al iniciar sesión con Google:", error.message);
     }
   };
 
@@ -111,35 +150,7 @@ function Login() {
     }
   };
   
-  const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        const uid = user.uid;
-        const token = await user.getIdToken();
-
-        localStorage.setItem('token', token);
-        localStorage.setItem('uid', uid);
-        console.log("Token guardado en localStorage:", token);
-        console.log("Inicio de sesión con Google exitoso:", result.user);
-        alert("Inicio de sesión exitoso");
-        Navigate('/reservar');
-
-        const userRef = doc(db, 'clientes', user.uid);
-        const docSnap = await getDoc(userRef);
-        
-        if (!docSnap.exists()) {
-            // Si no tiene datos, pide el número de teléfono
-            setIsGoogleUser(true); // Muestra el formulario para ingresar el número de teléfono
-        } else {
-            // Si el usuario ya existe, no pide el teléfono
-            window.location.reload(); // Recarga para acceder al sistema
-        }
-    } catch (error) {
-        console.error("Error al iniciar sesión con Google:", error.message);
-    }
-};
+ 
 
 const handleGoogleUserData = async (e) => {
     e.preventDefault();
