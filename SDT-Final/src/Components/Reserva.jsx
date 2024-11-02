@@ -8,7 +8,7 @@ import '../styles/reserva.css'; // Asegúrate de crear este archivo para los est
 
 function Reserva() {
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [usuario, setUsuario] = useState({ nombre: '', correo: '', telefono: '' });
   const [reserva, setReserva] = useState(true);
   const [mesaSeleccionada, setMesaSeleccionada] = useState(null);
@@ -16,6 +16,7 @@ function Reserva() {
   const [fecha, setFecha] = useState(null);
   const [horario, setHorario] = useState(null);
   const mesas = [1, 2, 3, 4, 5, 6];
+  const today = new Date().toISOString().split('T')[0];
 
 
   useEffect(() => {
@@ -110,7 +111,7 @@ function Reserva() {
                 </select>
 
                 <label htmlFor="fecha">Fecha:</label>
-                <input type="date" id='fecha' name='fecha' required value={fecha} onChange={(e)=> setFecha(e.target.value)} />
+                <input type="date" id='fecha' name='fecha' min={today} required value={fecha} onChange={(e)=> setFecha(e.target.value)} />
 
                 <label htmlFor="horario">Horario:</label>
                 <select name="horario" id="horario" required value={horario} onChange={(e)=> setHorario(e.target.value)}>
