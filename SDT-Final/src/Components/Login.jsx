@@ -88,7 +88,7 @@ function Login() {
         const role = docSnap.data().rol;
         localStorage.setItem('role', role);
       } else {
-        const adminRef = doc(db, 'administrador', user.uid);
+        const adminRef = doc(db, 'Administrador', user.uid);
         const adminSnap = await getDoc(adminRef);
 
         if (adminSnap.exists()) {
