@@ -56,12 +56,12 @@ function Navbar() {
             {role === 'cliente' && (
               <>
                 <li><Link to="/reservar">Reservar</Link></li>
-                <li><Link to="/mis-reservas">Ver Reservas</Link></li>
+                <li><Link to="/mis-reservas">Ver mis Reservas</Link></li>
               </>
             )}
             {role === 'admin' && (
               <>
-                <li><Link to="/ver-reservas-admin">Ver Mis Reservas</Link></li>
+                <li><Link to="/ver-reservas-admin">Ver Reservas</Link></li>
               </>
             )}
             <li><Link to="/contacto">Contacto</Link></li>

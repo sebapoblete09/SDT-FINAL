@@ -127,6 +127,7 @@ function Login() {
       apellido,
       correo,
       telefono,
+      rol: 'cliente'
     });
       // Limpia los campos del formulario
       setNombre('');

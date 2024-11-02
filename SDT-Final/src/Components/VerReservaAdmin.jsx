@@ -59,13 +59,13 @@ function VerReservasAdmin() {
     <main className="reservation-list">
       {isAuthenticated ? (
         <div>
-          <h1>Mis Reservas</h1>
+          <h1>Reservas</h1>
           {reservas.length > 0 ? (
             <>
               {reservas.slice(currentIndex, currentIndex + reservasPorPagina).map(reserva => (
                 <div key={reserva.id} className="reservation-item">
                   <div className="reservation-info">
-                    <p><strong>Cliente:</strong> {reserva.nombre}</p>
+                    <p><strong>Cliente:</strong> {reserva.nombre } {reserva.apelldio} </p>
                     <p><strong>Correo:</strong> {reserva.correo}</p>
                     <p><strong>Fecha:</strong> {reserva.fecha}</p>
                     <p><strong>Horario:</strong> {reserva.horario}</p>

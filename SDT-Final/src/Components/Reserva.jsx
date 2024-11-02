@@ -67,7 +67,8 @@ function Reserva() {
         await addDoc(collection(db, "reservas"), {
           uid: uid,
           estado: "Confirmada",
-          nombre: usuario.nombre, // Usa el nombre del usuario autenticado
+          nombre: usuario.nombre ,
+          apelldio:usuario.apellido, // Usa el nombre del usuario autenticado
           correo: usuario.correo, // Usa el correo del usuario autenticado
           telefono: usuario.telefono, // Usa el teléfono del usuario autenticado
           grupo: grupo, // Usar referencia
@@ -93,7 +94,7 @@ function Reserva() {
             <>
               <form>
                 <h1>¡Reserva ahora!</h1>
-                <p>Nombre: {usuario.nombre}</p>
+                <p>Nombre: {usuario.nombre} {usuario.apellido}</p>
                 <p>Correo: {usuario.correo}</p>
                 <p>Teléfono: {usuario.telefono}</p>
 
