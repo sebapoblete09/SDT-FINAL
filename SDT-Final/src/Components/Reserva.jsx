@@ -4,6 +4,7 @@ import { collection, addDoc, doc, getDocs, serverTimestamp, where, query , getDo
 import { db } from '../firebase/firebaseconfig'; 
 import horas from '../const/horas';
 import Login from './Login';
+import emailjs from 'emailjs-com';
 import '../styles/reserva.css'; // Asegúrate de crear este archivo para los estilos
 
 function Reserva() {
@@ -97,13 +98,41 @@ function Reserva() {
           mesa: mesaSeleccionada, // Utiliza la mesa seleccionada
           createdAt: serverTimestamp() // Agregar el timestamp aquí
         });
-        alert("Reservación confirmada con éxito!");
+        alert("Reservación confirmada con éxito!, por favor verifica tu correo");
+
+       
+
+        // Configura los datos del mensaje que se envía con EmailJS
+        const templateParams = {
+          name: usuario.nombre,
+          email: usuario.correo,
+          telefono: usuario.telefono,
+          grupo: grupo,
+          fecha: fecha,
+          horario: horario,
+          mesa: mesaSeleccionada
+        };
+
+        // Reemplaza 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', y 'YOUR_USER_ID' con tus valores de EmailJS
+        emailjs.send('service_4ie5ez4', 'template_rqpmnbl', templateParams, 'msvOlm1YjIR6h1Xs5')
+        .then((response) => {
+          console.log('Reserva enviada con éxito:', response.status, response.text);
+          console.log(templateParams);
+        })
+        .catch((error) => {
+          console.error('Error al enviar el correo:', error);
+          alert('Hubo un error al enviar el correo');
+        });
+        
       } catch (error) {
         console.error("Error al confirmar la reservación: ", error);
         alert("Hubo un problema al confirmar la reservación.");
       }
     }
   };
+
+
+
 
   return (
     <main >
