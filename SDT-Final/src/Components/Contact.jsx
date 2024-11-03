@@ -1,5 +1,6 @@
 // Home.jsx
 import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
 import '../styles/Contact.css';
 
 function Contact() {
@@ -11,7 +12,7 @@ function Contact() {
     comment: '',
   });
 
-  // Función para manejar el cambio de valores en los campos del formulario
+  // Manejar cambios en el formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -20,17 +21,31 @@ function Contact() {
     });
   };
 
-  // Función para construir el enlace mailto con los valores del formulario
+  // Enviar el correo al enviar el formulario
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     const { name, lastName, email, affair, comment } = formData;
-    const mailtoLink = `mailto:sdt.restaurantechile@gmail.com?subject=${encodeURIComponent(affair)}&body=${encodeURIComponent(
-      `Nombre: ${name} ${lastName}\nCorreo: ${email}\n\n${comment}`
-    )}`;
-    
-    // Abrir el enlace mailto en una nueva ventana
-    window.location.href = mailtoLink;
+
+    // Configura los datos del mensaje que se envía con EmailJS
+    const templateParams = {
+      name: name,
+      last_name: lastName,
+      email: email,
+      affair: affair,
+      comment: comment,
+    };
+
+    // Reemplaza 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', y 'YOUR_USER_ID' con tus valores de EmailJS
+    emailjs.send('service_4ie5ez4', 'template_w73sbrm', templateParams, 'msvOlm1YjIR6h1Xs5')
+      .then((response) => {
+        console.log('Correo enviado con éxito:', response.status, response.text);
+        console.log(templateParams);
+        alert('Correo enviado con éxito');
+      })
+      .catch((error) => {
+        console.error('Error al enviar el correo:', error);
+        alert('Hubo un error al enviar el correo');
+      });
   };
 
   return (
