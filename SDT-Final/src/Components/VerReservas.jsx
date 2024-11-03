@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { collection, query, where, getDocs, updateDoc, doc, } from 'firebase/firestore';
 import { db } from '../firebase/firebaseconfig';
+import emailjs from 'emailjs-com';
 import '../styles/reserva.css';
 
 function VerReservas() {
@@ -42,11 +43,35 @@ function VerReservas() {
   const handleCancel = async (id) => {
     try {
       const reservaRef = doc(db, "reservas", id);
+      const reservaCancelada = reservas.find(reserva => reserva.id === id);
       await updateDoc(reservaRef, { estado: "cancelada" });
       setReservas(reservas.map(reserva => 
         reserva.id === id ? { ...reserva, estado: "cancelada" } : reserva
       ));
       alert("Reserva cancelada exitosamente.");
+      
+      let messagueComfirm = `Nombre: ${reservaCancelada.nombre}\nEmail: ${reservaCancelada.correo}\nTelefono: ${reservaCancelada.telefono}\nTmaño del grupo: ${reservaCancelada.grupo}\nFecha: ${reservaCancelada.fecha}\nHorario: ${reservaCancelada.horario}\nN° de mesa: ${reservaCancelada.mesa}`;
+      messagueComfirm+= "\n\nLamentamos la cancelacion de su reserva, esperamos que nos visite denuevo.";
+
+     
+
+      // Configura los datos del mensaje que se envía con EmailJS
+      const templateParams = {
+        messague: messagueComfirm,
+        subject: "Cancelacion de reserva!!",
+        email:reservaCancelada.correo,
+      };
+
+      // Reemplaza 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', y 'YOUR_USER_ID' con tus valores de EmailJS
+      emailjs.send('service_4ie5ez4', 'template_rqpmnbl', templateParams, 'msvOlm1YjIR6h1Xs5')
+      .then((response) => {
+        console.log('Reserva enviada con éxito:', response.status, response.text);
+        console.log(templateParams);
+      })
+      .catch((error) => {
+        console.error('Error al enviar el correo:', error);
+        alert('Hubo un error al enviar el correo');
+      });
     } catch (error) {
       console.error("Error al cancelar la reserva: ", error);
       alert("Hubo un problema al cancelar la reserva.");

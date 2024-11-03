@@ -99,18 +99,17 @@ function Reserva() {
           createdAt: serverTimestamp() // Agregar el timestamp aquí
         });
         alert("Reservación confirmada con éxito!, por favor verifica tu correo");
+        
+        let messagueComfirm = `Nombre: ${usuario.nombre}\nEmail: ${usuario.correo}\nTelefono: ${usuario.telefono}\nTmaño del grupo: ${grupo}\nFecha: ${fecha}\nHorario: ${horario}\nN° de mesa: ${mesaSeleccionada}`;
+        messagueComfirm+= "\n\nMuchas gracias por su preferencia";
 
        
 
         // Configura los datos del mensaje que se envía con EmailJS
         const templateParams = {
-          name: usuario.nombre,
-          email: usuario.correo,
-          telefono: usuario.telefono,
-          grupo: grupo,
-          fecha: fecha,
-          horario: horario,
-          mesa: mesaSeleccionada
+          messague: messagueComfirm,
+          subject: "Confirmacion de reserva!!",
+          email:usuario.correo,
         };
 
         // Reemplaza 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', y 'YOUR_USER_ID' con tus valores de EmailJS
