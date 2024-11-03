@@ -1,32 +1,33 @@
-.About-us{
-    padding-top: 50%;
+.About-us {
+    padding-top: 90%;
 }
+
 .history-container {
-    display: flex; /* Usamos flexbox para alinear los elementos */
-    align-items: center; /* Centra verticalmente los elementos */
-    gap: 20px; /* Espacio entre imagen y texto */
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .history-image {
-    flex: 1; /* Permite que la imagen tome el 50% del espacio */
+    flex: 1;
 }
 
 .history-text {
-    flex: 1.7; /* Permite que el texto tome más espacio que la imagen */
+    flex: 1.7;
     text-align: justify;
     padding-right: 15px;
 }
 
-/* Ajustes adicionales para la imagen */
+/* Ajustes para la imagen */
 .history-image img {
-    width: 100%; /* Se adapta al contenedor */
-    max-width: 500px; /* Controla el tamaño máximo de la imagen */
-    height: auto; /* Mantiene la proporción de la imagen */
-    border-radius: 10px; /* Si deseas bordes redondeados */
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 10px;
     margin-left: 10px;
 }
 
-/* Estilo existente para la sección de historia */
+/* Estilo para la sección de historia */
 .History {
     background-color: #555;
     padding: 20px;
@@ -34,9 +35,7 @@
     color: whitesmoke;
 }
 
-
-
-/*fundadores*/
+/* Fundadores */
 .members-section {
     padding: 40px;
     text-align: center;
@@ -60,7 +59,6 @@
     max-width: 450px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
-    text-align: center;
     text-align: justify;
 }
 
@@ -92,55 +90,58 @@
     text-align: center;
 }
 
+/* Media queries para dispositivos pequeños */
 @media (max-width: 768px) {
-
-    .About-us{
-        padding-top: 180%;
+    .About-us {
+        padding-top: 150%; /* Ajusta según necesites */
     }
 
     .history-container {
         flex-direction: column;
-        font-size: 1em;
         align-items: center;
         text-align: center;
     }
 
     .history-image,
     .history-text {
-        flex: 1; /* Cada sección ocupa todo el ancho */
-        padding: 0; /* Elimina el padding lateral en móviles */
+        flex: 1;
+        padding: 0;
     }
 
     .history-text {
-        padding: 25px;
+        padding: 20px;
     }
 
+    /* Ajuste para tarjetas de miembros */
+    .members-container {
+        flex-direction: column; /* Una columna en dispositivos pequeños */
+        align-items: center; /* Centra las tarjetas */
+    }
+
+    .member-card {
+        width: 90%; /* Ajuste para pantallas pequeñas */
+    }
 }
-
-
 
 /* Estilos para tablets */
 @media (min-width: 769px) and (max-width: 1024px) {
-    /* Ajuste de padding para About-us en tablets */
     .About-us {
-        padding-top: 100%;
+        padding-top: 300%;
     }
 
-    /* Contenedor de historia */
     .history-container {
-        flex-direction: column; /* Mantiene una disposición en columna */
+        flex-direction: column;
         align-items: center;
     }
 
     .history-image,
     .history-text {
-        flex: 1; /* Cada sección ocupa todo el ancho */
-        padding: 30px; /* Reduce el padding para tablets */
+        flex: 1;
+        padding: 30px;
     }
 
-    /* Ajuste de imagen */
     .history-image img {
-        max-width: 80%; /* Limita el ancho de la imagen en tablets */
+        max-width: 80%;
     }
 
     /* Sección de miembros */
@@ -151,5 +152,59 @@
 
     .member-card {
         width: 45%; /* Dos tarjetas en cada fila */
+    }
+}
+
+.mission-vision-values {
+    padding: 40px;
+    text-align: center;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #202020;
+    color: whitesmoke;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+    text-align: justify;
+    border: 1px solid #ddd;
+}
+
+.card h3 {
+    color: #e81010;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+@media (min-width: 421px ) and (max-width: 768px) {
+    .cards-container {
+        flex-direction: column; /* Una columna en móviles */
+        align-items: center;
+    }
+
+    .card {
+        width: 90%; /* Ajuste para pantallas pequeñas */
+    }
+}
+
+
+@media (max-width: 420px) {
+    .About-us{
+        padding-top: 700%;
+    }
+    img{
+        display: none;
     }
 }

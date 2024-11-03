@@ -44,6 +44,25 @@ function About() {
         </div>
       </section>
 
+       {/* Nueva sección para Misión, Visión y Valores */}
+       <section className="mission-vision-values">
+          <h2>Nuestra Misión, Visión y Valores</h2>
+          <div className="cards-container">
+            <div className="card">
+              <h3>Misión</h3>
+              <p>Preservar y promover la gastronomía chilena, ofreciendo una experiencia auténtica y memorable a nuestros clientes.</p>
+            </div>
+            <div className="card">
+              <h3>Visión</h3>
+              <p>Convertirnos en el referente de la cocina chilena en Santiago, siendo un lugar donde todos puedan disfrutar de la riqueza de nuestras tradiciones culinarias.</p>
+            </div>
+            <div className="card">
+              <h3>Valores</h3>
+              <p>Autenticidad, Calidad, Tradición, y Compromiso con nuestra comunidad y el medio ambiente.</p>
+            </div>
+          </div>
+        </section>
+
       <section className='Members'>
         <div className="members-section">
           <h2>Fundadores</h2>
