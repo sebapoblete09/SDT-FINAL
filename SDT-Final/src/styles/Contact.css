@@ -70,3 +70,55 @@
     transition: background-color 0.3s ease-out;
     outline: 0;
 }
+
+/* Estilos para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+    .content {
+        width: 45vh; /* Ocupa todo el ancho en móviles */
+    }
+
+    .titulo {
+        font-size: 2em; /* Reduce el tamaño de fuente del título */
+        padding-top: 20%; /* Ajusta el espacio superior */
+    }
+
+    .contact-form form {
+        grid-template-columns: 1fr; /* Cambia a una sola columna */
+    }
+
+    .contact-form form .block {
+        grid-column: 1 / 2; /* Asegura que los elementos de "block" ocupen una columna completa */
+    }
+
+    .contact-form form button {
+        font-size: 1em; /* Reduce el tamaño de fuente del botón */
+        padding: 10px; /* Reduce el padding del botón */
+    }
+}
+
+/* Estilos para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .content {
+        width: 50vh; /* Ajusta el ancho para tablets */
+        padding: 20px; /* Reduce el padding */
+    }
+
+    .titulo {
+        font-size: 3em; /* Ajusta el tamaño de fuente del título */
+        padding-top: 15%; /* Reduce el padding superior */
+    }
+
+    .contact-form form {
+        grid-template-columns: 1fr 1fr; /* Mantiene dos columnas en tablets */
+    }
+
+    .contact-form form .block {
+        grid-column: 1 / 3; /* Elementos de "block" ocupan ambas columnas */
+    }
+
+    .contact-form form button {
+        font-size: 1.2em; /* Ajusta el tamaño de fuente del botón */
+        padding: 10px 15px; /* Ajusta el padding del botón */
+    }
+}
+

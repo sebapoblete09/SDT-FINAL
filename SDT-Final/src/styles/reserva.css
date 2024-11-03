@@ -6,6 +6,7 @@
     margin: 60px auto 20px auto; /* Margen superior más grande para separarlo del navbar */
     max-width: 500px; /* Ancho máximo */
     margin-top: 20%;
+    background-color: #202020;
 }
 
 h1{
@@ -96,7 +97,7 @@ input, select {
 .reservation-list {
     width: 950px;
     padding: 20px;
-    background-color: #323232;
+    background-color: #202020;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20%;
@@ -169,4 +170,71 @@ input, select {
 
 .pagination-buttons button:hover {
     background-color: #ff4d4d;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    
+
+    h1 {
+        font-size: 2.5em; /* Reduce el tamaño de h1 */
+    }
+
+    h3 {
+        font-size: 1.3em; /* Reduce el tamaño de h3 */
+    }
+
+    p {
+        font-size: 1em; /* Reduce el tamaño de los párrafos */
+    }
+
+    #mesas {
+        grid-template-columns: repeat(2, 1fr); /* Ajusta a dos columnas */
+    }
+
+    #mesa-btn {
+        width: 80px; /* Ajusta el tamaño de las mesas */
+        height: 80px;
+        font-size: 24px; /* Ajusta el tamaño de fuente de las mesas */
+    }
+
+    .reservation-list {
+        width: 40vh; /* Asegura que la lista ocupe el ancho completo */
+        
+        flex-direction: column;
+    }
+
+    .reservation-item {
+        flex-direction: wrap; /* Coloca la info en columnas */
+       
+    }
+
+    .delete-button {
+        font-size: 20px; /* Reduce el tamaño del botón */
+        padding: 8px 15px; /* Ajusta el padding */
+        
+    }
+
+    .pagination-buttons button {
+        padding: 8px 10px; /* Ajusta el padding de los botones de paginación */
+    }
+}
+
+/* Responsive para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .reservation, .reservation-list {
+        width: 45vh; /* Ajusta el ancho para tablets */
+    }
+
+    h1 {
+        font-size: 3em; /* Reduce el tamaño de h1 */
+    }
+
+    h3 {
+        font-size: 1.4em; /* Reduce el tamaño de h3 */
+    }
+
+    #mesas {
+        grid-template-columns: repeat(3, 1fr); /* Tres columnas en tablets */
+    }
 }

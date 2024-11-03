@@ -60,3 +60,61 @@
     background-color: #d93636;
     color:#323232 ;
 }
+
+/* Estilos para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+    .menu-buttons {
+        flex-direction: column; /* Botones en columna */
+        gap: 10px; /* Reduce el espacio entre botones */
+    }
+
+
+    .menu-items {
+        width: 100%; /* Ocupa todo el ancho de la pantalla */
+        padding: 50px; /* Ajusta el padding interno */
+    }
+
+    .menuItem {
+        flex-direction: column; /* Coloca el contenido en columna */
+        align-items: flex-start; /* Alinea al inicio */
+        padding: 10px 0; /* Reduce el padding */
+        margin-bottom: 20px;
+    }
+
+    .downloadMenu {
+        width: 100%; /* El botón ocupa todo el ancho */
+        font-size: 18px; /* Reduce el tamaño de fuente */
+        padding: 8px 15px; /* Ajusta el padding */
+    }
+}
+
+/* Estilos para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .menu-buttons {
+        flex-direction: row; /* Botones en fila */
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .menu-section {
+        padding-bottom: 20px;
+    }
+
+    .menu-items {
+        width: 80%; /* Ajusta el ancho en tablets */
+        max-height: 500px; /* Ajusta la altura máxima */
+        padding: 15px;
+    }
+
+    .menuItem {
+        padding: 15px 0;
+        margin-bottom: 15px;
+    }
+
+    .downloadMenu {
+        width: 80%; /* Botón ocupa el 80% del ancho */
+        font-size: 20px; /* Ajusta el tamaño de fuente */
+        padding: 10px 20px;
+        margin: 0 auto; /* Centra el botón */
+    }
+}

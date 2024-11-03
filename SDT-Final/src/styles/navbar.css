@@ -66,11 +66,12 @@
         display: none; /* Ocultar menú por defecto en pantallas pequeñas */
         flex-direction: column;
         width: 100%;
-        height: 30vh;
+        height: 35vh;
         background-color: #e81010;
         position: absolute;
         top: 50px; /* Alineación debajo del navbar */
         left: 0;
+        
     }
 
     .navbar-menu.open {

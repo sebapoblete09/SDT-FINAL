@@ -61,6 +61,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
     text-align: center;
+    text-align: justify;
 }
 
 .member-card:hover {
@@ -89,4 +90,66 @@
     background-color: #202020;
     padding: 40px;
     text-align: center;
+}
+
+@media (max-width: 768px) {
+
+    .About-us{
+        padding-top: 180%;
+    }
+
+    .history-container {
+        flex-direction: column;
+        font-size: 1em;
+        align-items: center;
+        text-align: center;
+    }
+
+    .history-image,
+    .history-text {
+        flex: 1; /* Cada sección ocupa todo el ancho */
+        padding: 0; /* Elimina el padding lateral en móviles */
+    }
+
+    .history-text {
+        padding: 25px;
+    }
+
+}
+
+
+
+/* Estilos para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Ajuste de padding para About-us en tablets */
+    .About-us {
+        padding-top: 100%;
+    }
+
+    /* Contenedor de historia */
+    .history-container {
+        flex-direction: column; /* Mantiene una disposición en columna */
+        align-items: center;
+    }
+
+    .history-image,
+    .history-text {
+        flex: 1; /* Cada sección ocupa todo el ancho */
+        padding: 30px; /* Reduce el padding para tablets */
+    }
+
+    /* Ajuste de imagen */
+    .history-image img {
+        max-width: 80%; /* Limita el ancho de la imagen en tablets */
+    }
+
+    /* Sección de miembros */
+    .members-container {
+        flex-direction: row; /* Dos columnas en tablets */
+        flex-wrap: wrap;
+    }
+
+    .member-card {
+        width: 45%; /* Dos tarjetas en cada fila */
+    }
 }

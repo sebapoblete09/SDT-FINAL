@@ -1,29 +1,28 @@
+/* Estilos generales */
 body  {
-  display: flex; /* Usar flexbox para centrar */
-  justify-content: center; /* Centrar horizontalmente */
-  align-items: center; /* Centrar verticalmente */
-  height: 100vh; /* Altura de la ventana completa */
-  margin: 0; /* Sin margen en el body */
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
 .container-form {
-  max-width: 500px; /* Limita el ancho máximo del formulario */
-  width: 100%; /* Permitir que el formulario se ajuste al ancho máximo */
-  padding: 20px; /* Espaciado interno */
-  border-radius: 8px; /* Bordes redondeados */
+  max-width: 500px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 8px;
   background-color: #e81010;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
-  margin-top: 15%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-  text-align: center; /* Centra el texto */
-  color: whitesmoke; /* Color del texto */
+  text-align: center;
+  color: whitesmoke;
 }
 
 .form-group {
-  margin-bottom: 20px; /* Espaciado entre los campos */
+  margin-bottom: 20px;
   text-align: center;
 }
 
@@ -31,11 +30,11 @@ input[type="email"],
 input[type="password"],
 input[type="text"],
 input[type="tel"] {
-  width: 90%; /* Ocupa todo el ancho del contenedor */
-  padding: 10px; /* Espaciado interno del campo */
-  border: 1px solid #ccc; /* Borde del campo */
-  border-radius: 10px; /* Bordes redondeados */
-  font-size: 16px; /* Tamaño de fuente */
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
   margin-bottom: 15px;
 }
 
@@ -43,33 +42,83 @@ input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="text"]:focus,
 input[type="tel"]:focus {
-  border-color: #007bff; /* Color del borde al enfocar */
-  outline: none; /* Sin contorno */
+  border-color: #007bff;
+  outline: none;
 }
 
 .btns {
-  display: flex; /* Muestra los botones en fila */
-  justify-content: space-between; /* Espaciado entre botones */
-  margin-top: 15px; /* Espacio superior para separar de los campos de entrada */
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
 }
 
 button {
-  padding: 10px 15px; /* Espaciado interno del botón */
-  border: none; /* Sin borde */
-  border-radius: 4px; /* Bordes redondeados */
-  color: white; /* Color del texto */
-  cursor: pointer; /* Cambia el cursor al pasar el ratón */
-  font-size: 16px; /* Tamaño de fuente */
-  flex: 1; /* Permite que los botones se expandan por igual */
-  margin: 0 5px; /* Espacio horizontal entre botones */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  flex: 1;
+  margin: 0 5px;
 }
 
 button:hover {
-  background-color: #746743; /* Color al pasar el ratón */
+  background-color: #746743;
 }
 
 span {
-  display: block; /* Separa el texto de la cabecera */
-  text-align: center; /* Centra el texto */
-  margin-bottom: 20px; /* Espaciado inferior */
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Estilos para pantallas grandes (PC) */
+@media (min-width: 1025px) {
+  .container-form {
+    max-width: 600px; /* Aumenta el tamaño del formulario */
+    padding: 30px; /* Mayor espaciado interno */
+  }
+
+  h2 {
+    font-size: 2.5em; /* Aumenta el tamaño del título */
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  input[type="tel"] {
+    font-size: 18px; /* Tamaño de fuente ligeramente mayor */
+    padding: 12px; /* Más padding en los campos */
+  }
+
+  button {
+    font-size: 18px; /* Aumenta el tamaño de fuente de los botones */
+    padding: 12px 20px; /* Más padding en los botones */
+  }
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+  .container-form {
+    max-width: 90%; /* Ajusta el ancho para móviles */
+    padding: 15px; /* Menor padding interno */
+
+  }
+
+  h2 {
+    font-size: 2em; /* Tamaño de fuente más pequeño para móviles */
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  input[type="tel"] {
+    font-size: 14px; /* Reduce el tamaño de fuente */
+  }
+
+  button {
+    font-size: 14px; /* Tamaño de fuente menor para botones en móviles */
+    padding: 8px 10px; /* Menor padding en los botones */
+  }
 }
