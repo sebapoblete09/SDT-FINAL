@@ -70,6 +70,13 @@ function Navbar() {
         </nav>
       ) : (
         <nav className="navbar">
+          <div className="navbar-header">
+            <button className="navbar-toggler" onClick={toggleMenu}>
+              <span className="navbar-icon"></span>
+              <span className="navbar-icon"></span>
+              <span className="navbar-icon"></span>
+            </button>
+          </div>
           <ul className={`navbar-menu ${isOpen ? 'open' : ''}`}>
             <li><Link to="/">Inicio</Link></li>
             <li><Link to="/sobre-nosotros">Sobre Nosotros</Link></li>

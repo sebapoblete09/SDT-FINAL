@@ -239,3 +239,116 @@ li{
     gap: 1rem; /* Espacio entre los botones */
     margin-top: 1rem; /* Espacio entre el formulario y los botones */
 }
+
+/*Responsive*/
+
+/* Estilos generales para pantallas pequeñas */
+@media (max-width: 768px) {
+    /* Ajustes para la sección hero */
+    #hero h1 {
+        font-size: 2.5em;
+        padding-top: 150%;
+    }
+
+    #hero h2 {
+        font-size: 1.5em;
+        padding-bottom: 60px;
+    }
+
+    /* Ajuste del padding en la sección hero en móviles */
+    .home {
+        padding-top: 50%;
+    }
+
+    /* Reducción de tamaño para el contenedor de botones */
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Ajustes para el navbar */
+    .navbar-menu {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .navbar-menu li {
+        margin: 10px 0;
+    }
+
+    /* Ajustes para contenedores de About Us */
+    .AboutUs-Container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .Card {
+        width: 90%; /* Asegura que las tarjetas ocupen la mayor parte del ancho en pantallas pequeñas */
+    }
+
+    /* Ajustes para sección de eventos y noticias */
+    .news-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .news-item {
+        width: 90%; /* Ajuste de ancho en dispositivos móviles */
+    }
+
+    /* Ajustes para formularios de noticias */
+    #add-edit-news form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #add-edit-news input, 
+    #add-edit-news textarea {
+        width: 80%; /* Aumenta el ancho en pantallas pequeñas */
+    }
+
+    #add-edit-news button {
+        width: 80%;
+        margin-left: 0; /* Centra los botones */
+    }
+
+    /* Ajustes de los botones del formulario */
+    #add-edit-news .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Ajustes específicos para pantallas medianas (tablets) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #hero h1 {
+        font-size: 2.8em;
+        padding-top: 800px;
+    }
+
+    #hero h2 {
+        font-size: 2.8em;
+    }
+
+    .Card, .news-item {
+        width: 45%; /* Dos columnas en tablets */
+ 
+    }
+
+    /* Reducción de padding en About Us */
+    #About-us, #events-news {
+        padding: 2.6rem;
+    }
+
+    /* Ajustes para formularios de noticias en tablets */
+    #add-edit-news input, 
+    #add-edit-news textarea {
+        width: 60%;
+        align-items: center;
+    }
+
+    #add-edit-news button {
+        width: 30%;
+    }
+
+}

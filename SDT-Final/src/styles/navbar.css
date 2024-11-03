@@ -53,12 +53,20 @@
     text-decoration: none; /* Sin subrayado en los enlaces */
 }
 
+.navbar-toggler:focus{
+    background-color: #e81010;
+    border-radius: 0;
+    border-color: #e81010;
+    outline: 0;
+}
+
 /* Media Queries para el menú responsivo */
 @media (max-width: 768px) {
     .navbar-menu {
         display: none; /* Ocultar menú por defecto en pantallas pequeñas */
         flex-direction: column;
         width: 100%;
+        height: 30vh;
         background-color: #e81010;
         position: absolute;
         top: 50px; /* Alineación debajo del navbar */
