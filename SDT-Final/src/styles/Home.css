@@ -198,3 +198,44 @@ body, html, .main-container, #hero, #About-us, #events-news {
 li{
     list-style: none;
 }
+
+/*edicion news*/
+
+#add-edit-news {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#add-edit-news form {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+
+#add-edit-news input, 
+#add-edit-news textarea {
+    border-radius: 10px;
+    width: 30%; /* Puedes ajustar el ancho según lo que necesites */
+    background-color: whitesmoke;
+    color: #202020;
+    margin: 0.5rem; /* Espacio entre los elementos */
+    padding: 10px;
+}
+
+#add-edit-news button {
+    width: 20%; /* Botón a la derecha */
+    margin-left: 1rem; /* Espacio entre los botones */
+}
+
+#add-edit-news ::placeholder {
+    color: #202020;
+}
+
+#add-edit-news .button-container { /* Asegúrate de que esta clase esté en el div que contiene los botones */
+    display: flex; /* Cambiado a flex */
+    justify-content: flex-end; /* Alinea los botones a la derecha */
+    gap: 1rem; /* Espacio entre los botones */
+    margin-top: 1rem; /* Espacio entre el formulario y los botones */
+}

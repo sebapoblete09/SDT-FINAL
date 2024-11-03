@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect,} from 'react';
+import { useNavigate,  } from 'react-router-dom';
 import { collection, addDoc, doc, getDocs, serverTimestamp, where, query , getDoc} from 'firebase/firestore'; 
 import { db } from '../firebase/firebaseconfig'; 
 import horas from '../const/horas';
@@ -9,6 +10,7 @@ import '../styles/reserva.css'; // Asegúrate de crear este archivo para los est
 
 function Reserva() {
 
+  const Navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [usuario, setUsuario] = useState({ nombre: '', correo: '', telefono: '' });
   const [reserva, setReserva] = useState(true);
@@ -122,6 +124,8 @@ function Reserva() {
           console.error('Error al enviar el correo:', error);
           alert('Hubo un error al enviar el correo');
         });
+
+        Navigate('/');
         
       } catch (error) {
         console.error("Error al confirmar la reservación: ", error);

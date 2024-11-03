@@ -143,10 +143,28 @@ function Home() {
                 onChange={handleChange}
                 required
               />
-
-              <button type="submit">{editing ? 'Guardar Cambios' : 'Agregar Noticia'}</button>
+              <div  className="button-container">
+                <button className="button" type="submit">
+                  {editing ? 'Guardar Cambios' : 'Agregar Noticia'}
+                </button>
+                {/* Este botón solo se muestra cuando estamos editando */}
+                {editing && (
+                  <button 
+                    type="button" 
+                    className="button" 
+                    onClick={() => {
+                      setEditing(false); // Cambia el estado de editing a false
+                      setNewNews({ title: '', description: '' }); // Limpia los campos
+                    }}
+                  >
+                    Volver a Añadir Noticia
+                  </button>
+                )}
+              </div>
             </form>
           </section>
+          
+          
           )}
 
           {role === 'cliente' &&(
@@ -164,15 +182,16 @@ function Home() {
                 
               </div>
             </section>
-  
-
           )}
 
-          
-          <section id="Adm_reserva">
+          {role==='cliente' && (
+            <section id="Adm_reserva">
             <li><Link to="/reservar" className='button'>Reservar</Link></li>
             <li><Link to="/mis-reservas" className='button'>Cancelar Reserva</Link></li>
           </section>
+
+          )}
+          
         </>
 
       ):(
@@ -224,15 +243,7 @@ function Home() {
             <li><Link to="/mis-reservas" className='button'>Cancelar Reserva</Link></li>
           </section></>
 
-      )}
-        
-
-
-        
-
-      
-
-       
+      )}       
     </div>
   );
 }
