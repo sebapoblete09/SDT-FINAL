@@ -1,27 +1,32 @@
+/* Sección de botones de categoría */
 .menu-buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
     margin-bottom: 20px;
-    /* Eliminado el margen superior */
 }
 
+/* Contenedor general de la sección del menú */
 .menu-section {
-    padding: 20px; /* Espaciado general */
-    /* Si necesitas más espacio en la parte superior, añade aquí padding-top */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
 }
 
+/* Contenedor de la lista de platos */
 .menu-items {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    max-height: 400px; /* Establecer un alto máximo */
-    padding: 20px; /* Espaciado interior */
+    max-height: 400px;
+    padding: 20px;
     width: 700px;
-
+    overflow-y: auto;
 }
 
-/* Los otros estilos existentes */
+/* Estilo de cada plato en la lista */
 .menuItem {
     display: flex;
     justify-content: space-between;
@@ -29,71 +34,93 @@
     border-bottom: 1px solid #746743;
     padding: 20px 0;
     margin-bottom: 20px;
-    
 }
-/* Si tienes elementos de texto específicos, asegúrate de que tengan el siguiente estilo */
-.menuItem .menuName, /* Suponiendo que tus nombres de platos tengan esta clase */
-.menuItem .menuDescription { 
-    text-align: left; /* Alinea el texto a la izquierda */
-    margin-right: 20px; /* Agrega un margen a la derecha si necesitas separación */
-}
-/* Estilos para la sección de descarga */
 
-.downloadMenu-container{
-    padding-top: 10px;
-    
+.menuItem .menuName, .menuItem .menuDescription {
+    text-align: left;
+    margin-right: 20px;
 }
-.downloadMenu {
+
+/* Formulario para añadir un nuevo plato */
+.add-menu-item-form {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.add-menu-item-form h2 {
+    font-size: 24px;
+    text-align: center;
+    color: #333;
+}
+
+.add-menu-item-form label {
+    font-size: 16px;
+    color: #555;
+}
+
+.add-menu-item-form input, 
+.add-menu-item-form select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.add-menu-item-form button {
     padding: 10px 20px;
-    background-color: #e81010;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 18px;
     transition: background-color 0.3s ease;
-    margin-left: auto; /* Alínea el botón a la derecha */
-    width: 100%; /* Reduce el ancho del botón */
 }
 
-.downloadMenu:hover {
-    background-color: #d93636;
-    color:#323232 ;
+.add-menu-item-form button:hover {
+    background-color: #218838;
 }
+
+
 
 /* Estilos para pantallas pequeñas (móviles) */
 @media (max-width: 768px) {
     .menu-buttons {
-        flex-direction: column; /* Botones en columna */
-        gap: 10px; /* Reduce el espacio entre botones */
+        flex-direction: column;
+        gap: 10px;
     }
 
-
     .menu-items {
-        width: 100%; /* Ocupa todo el ancho de la pantalla */
-        padding: 50px; /* Ajusta el padding interno */
+        width: 100%;
+        padding: 20px;
     }
 
     .menuItem {
-        flex-direction: column; /* Coloca el contenido en columna */
-        align-items: flex-start; /* Alinea al inicio */
-        padding: 10px 0; /* Reduce el padding */
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 0;
         margin-bottom: 20px;
     }
 
-    .downloadMenu {
-        width: 100%; /* El botón ocupa todo el ancho */
-        font-size: 18px; /* Reduce el tamaño de fuente */
-        padding: 8px 15px; /* Ajusta el padding */
+
+    .add-menu-item-form {
+        width: 100%;
+        padding: 15px;
     }
 }
 
 /* Estilos para tablets */
 @media (min-width: 769px) and (max-width: 1024px) {
     .menu-buttons {
-        flex-direction: row; /* Botones en fila */
         gap: 10px;
-        justify-content: center;
     }
 
     .menu-section {
@@ -101,8 +128,8 @@
     }
 
     .menu-items {
-        width: 80%; /* Ajusta el ancho en tablets */
-        max-height: 500px; /* Ajusta la altura máxima */
+        width: 80%;
+        max-height: 500px;
         padding: 15px;
     }
 
@@ -111,10 +138,8 @@
         margin-bottom: 15px;
     }
 
-    .downloadMenu {
-        width: 80%; /* Botón ocupa el 80% del ancho */
-        font-size: 20px; /* Ajusta el tamaño de fuente */
-        padding: 10px 20px;
-        margin: 0 auto; /* Centra el botón */
+    .add-menu-item-form {
+        max-width: 400px;
+        padding: 15px;
     }
 }

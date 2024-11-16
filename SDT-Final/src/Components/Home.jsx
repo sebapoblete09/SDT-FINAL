@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { db, storage } from '../firebase/firebaseconfig'; // Importa tu configuración de Firebase
+import { db } from '../Firebase/firebaseconfig'; // Importa tu configuración de Firebase
 import { collection, addDoc, getDocs, orderBy, query , updateDoc, doc} from 'firebase/firestore';
-import { ref, uploadBytes } from 'firebase/storage';
+
 import '../styles/Home.css'; 
 
 function Home() {

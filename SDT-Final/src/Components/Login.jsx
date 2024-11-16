@@ -3,7 +3,7 @@ import React, { useState , useEffect} from 'react';
 import { useNavigate,  } from 'react-router-dom';
 import { auth } from '../firebase/firebaseconfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
-import { doc, setDoc, getDoc, addDoc } from 'firebase/firestore'; 
+import { doc, setDoc, getDoc } from 'firebase/firestore'; 
 import { db } from '../firebase/firebaseconfig'; 
 import '../styles/login.css';
 
