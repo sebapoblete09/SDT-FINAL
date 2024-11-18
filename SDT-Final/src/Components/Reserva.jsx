@@ -32,7 +32,7 @@ function Reserva() {
           // Asegurarse de que las mesas y horarios se actualicen correctamente
           const mesasAdicionales = data.mesasAdicionales || [];
           setMesas([1, 2, 3, 4, 5, 6, ...mesasAdicionales]);  // Siempre añades las mesas predeterminadas
-          const horariosAdicionales = data.horariosAdicionales || [];
+          const horariosAdicionales = data.horasAdicionales || [];
           setHoras([...horas, ...horariosAdicionales.map(h => ({ value: h, label: h }))]);  // Combinas las horas predeterminadas con las adicionales
         } else {
           setMesas([1, 2, 3, 4, 5, 6]);  // Si no hay datos adicionales, usa las mesas predeterminadas
@@ -43,7 +43,6 @@ function Reserva() {
   
     fetchDisponibilidad();
   }, [fecha]);  // Esto se ejecutará cada vez que cambie la fecha
-  
 
   useEffect(() => {
     const fetchMesasOcupadas = async () => {
@@ -123,7 +122,7 @@ function Reserva() {
         });
         alert("Reservación confirmada con éxito!, por favor verifica tu correo");
 
-        let messagueComfirm = `Nombre: ${usuario.nombre}\nEmail: ${usuario.correo}\nTelefono: ${usuario.telefono}\nTamaño del grupo: ${grupo}\nFecha: ${fecha}\nHorario: ${horario}\nN° de mesa: ${mesaSeleccionada}`;
+        let messagueComfirm = `Nombre: ${usuario.nombre}\nEmail: ${usuario.correo}\nTelefono: ${usuario.telefono}\nTamaño del grupo: ${grupo}\nFecha: ${fecha}\nHorario: ${horario}\nN° de mesa: ${mesaSeleccionada}`;        
         messagueComfirm += "\n\nMuchas gracias por su preferencia";
 
         const templateParams = {
@@ -135,7 +134,6 @@ function Reserva() {
         emailjs.send('service_4ie5ez4', 'template_rqpmnbl', templateParams, 'msvOlm1YjIR6h1Xs5')
         .then((response) => {
           console.log('Reserva enviada con éxito:', response.status, response.text);
-          console.log(templateParams);
         })
         .catch((error) => {
           console.error('Error al enviar el correo:', error);
@@ -149,6 +147,7 @@ function Reserva() {
       }
     }
   };
+
   return (
     <main>
       {isAuthenticated ? (
@@ -193,18 +192,25 @@ function Reserva() {
               <div id='mesa-container'>
                 <h3>Elige una mesa</h3>
                 <div id='mesas'>
-                  {mesas.map(mesa => (
-                    <button key={mesa} id='mesa-btn' onClick={() => handleSeleccionarMesa(mesa)}
-                      style={{
-                        backgroundColor: mesasOcupadas.includes(mesa) ? 'red' : (mesaSeleccionada === mesa ? 'green' : '#746743')
-                      }}
-                      disabled={mesasOcupadas.includes(mesa)}>
-                      {mesa}
-                    </button>
-                  ))}
-                </div>
+  {mesas.map(mesa => (
+    <button
+      key={mesa}
+      id='mesa-btn'
+      onClick={() => handleSeleccionarMesa(mesa)}
+      style={{
+        backgroundColor: mesasOcupadas.includes(mesa) ? 'red' : (mesaSeleccionada === mesa ? 'green' : ''),
+        pointerEvents: mesasOcupadas.includes(mesa) ? 'none' : 'auto', // Desactiva el botón si la mesa está ocupada
+      }}
+      disabled={mesasOcupadas.includes(mesa)} // Desactiva el botón si la mesa está ocupada
+    >
+      Mesa {mesa}
+    </button>
+  ))}
+</div>
+
+
+                <button onClick={handleReserva}>Cancelar</button>
                 {mesaSeleccionada && <button onClick={handleConfrimationReserv}>Confirmar Reserva</button>}
-                <button onClick={handleReserva}>Volver a la reserva</button>
               </div>
             </>
           )}

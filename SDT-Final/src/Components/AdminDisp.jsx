@@ -2,29 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../Firebase/firebaseconfig';
 import '../styles/AdminDips.css';
+import horas from '../const/horas'
 
 function AdminDisponibilidad() {
   const [fecha, setFecha] = useState('');
   const [mesasAdicionales, setMesasAdicionales] = useState([]);
   const [cantidadMesas, setCantidadMesas] = useState('');
-  
+  const [horasAdicionales, setHorasAdicionales] = useState([]);
+  const [hora, setHora] = useState('');
+
   const today = new Date().toISOString().split('T')[0];
   const mesasPredeterminadas = [1, 2, 3, 4, 5, 6]; // Mesas predeterminadas
+  const horasPredeterminadas = ['12:30','14:00','15:30','17:00','18:30']; // Horas predeterminadas de 08:00 a 22:00
 
-  // Función para cargar la disponibilidad (solo mesas)
+  // Función para cargar la disponibilidad (mesas y horas)
   const cargarDisponibilidad = async () => {
     if (!fecha) return;
-  
+
     const docRef = doc(db, 'disponibilidad', fecha);
     try {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
-        // Cargar las mesas adicionales desde la base de datos
         setMesasAdicionales(data.mesasAdicionales || []);
+        setHorasAdicionales(data.horasAdicionales || []);
       } else {
-        // Si no hay datos, usar las mesas predeterminadas
+        // Si no hay datos, usar las mesas y horas predeterminadas
         setMesasAdicionales([]);
+        setHorasAdicionales([]);
       }
     } catch (error) {
       console.error("Error al cargar disponibilidad: ", error);
@@ -47,6 +52,7 @@ function AdminDisponibilidad() {
     try {
       await setDoc(docRef, {
         mesasAdicionales, // Guardar solo las mesas adicionales
+        horasAdicionales, // Guardar las horas adicionales
       }, { merge: true }); // Combina con los datos existentes
       alert('Disponibilidad actualizada');
     } catch (error) {
@@ -81,6 +87,30 @@ function AdminDisponibilidad() {
   const handleEliminarMesa = (mesa) => {
     setMesasAdicionales((prevMesas) => {
       return prevMesas.filter((item) => item !== mesa);
+    });
+  };
+
+  // Función para agregar nuevas horas
+  const handleAgregarHoras = () => {
+    if (!hora || !/^(0[8-9]|1[0-9]|2[0-2]):([0-5][0-9])$/.test(hora)) {
+      alert("Seleccione una hora válida entre las 08:00 y las 22:00.");
+      return;
+    }
+
+    // Verificar si la hora ya fue añadida
+    if (horasAdicionales.includes(hora)) {
+      alert("La hora ya fue agregada.");
+      return;
+    }
+
+    setHorasAdicionales([...horasAdicionales, hora]);
+    setHora('');
+  };
+
+  // Función para eliminar horas
+  const handleEliminarHora = (hora) => {
+    setHorasAdicionales((prevHoras) => {
+      return prevHoras.filter((item) => item !== hora);
     });
   };
 
@@ -121,6 +151,33 @@ function AdminDisponibilidad() {
             <li key={mesa}>
               Mesa {mesa}
               <button onClick={() => handleEliminarMesa(mesa)}>Eliminar</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Gestión de Horas */}
+      <div className='gestion-horas'>
+        <h3>Gestionar Horas</h3>
+        <div>
+          <h4>Agregar Hora</h4>
+          <input
+            type="time"
+            value={hora}
+            min="08:00"
+            max="22:00"
+            step="3600"
+            onChange={(e) => setHora(e.target.value)}
+          />
+          <button onClick={handleAgregarHoras}>Agregar Hora</button>
+        </div>
+
+        <h4>Eliminar Hora</h4>
+        <ul>
+          {[...horasPredeterminadas, ...horasAdicionales].map((hora) => (
+            <li key={hora}>
+              {hora}
+              <button onClick={() => handleEliminarHora(hora)}>Eliminar</button>
             </li>
           ))}
         </ul>
