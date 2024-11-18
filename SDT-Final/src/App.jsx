@@ -5,6 +5,7 @@ import Home from './Components/Home';
 import About from './Components/About';
 import Menu from './Components/Menu';
 import Reserva from './Components/Reserva';
+import AdminDisponibilidad from './Components/AdminDisp'
 import VerReservas from './Components/VerReservas';
 import VerReservasAdmin from './Components/VerReservaAdmin';
 import Contact from './Components/Contact';
@@ -24,6 +25,7 @@ function App() {
         <Route path='/ver-reservas-admin' element={<VerReservasAdmin/>}/>
         <Route path='/contacto' element={<Contact/>}/>
         <Route path="/iniciar-sesion" element={<Login />} />
+        <Route path='/AdminRes' element={<AdminDisponibilidad/>}/>
         {/* Agrega más rutas aquí */}
       </Routes>
     </Router>

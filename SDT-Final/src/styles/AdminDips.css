@@ -1,0 +1,95 @@
+/* Contenedor principal */
+.disponibilidad{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 25%;
+    display: block;
+}
+
+.fecha-dips{
+    margin-top: 20px;
+}
+.gestion-mesas{
+    margin-top: 10px;
+  }
+  
+  /* Contenedor de las mesas */
+  .gestion-mesas ul {
+    display: flex;
+    flex-wrap: wrap; /* Para que las mesas se ajusten en varias filas */
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  /* Estilo para cada mesa */
+  .gestion-mesas li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(33.33% - 10px); /* Tres elementos por fila */
+    margin: 5px; /* Espaciado entre las horas */
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+.eliminar-hrs ul {
+    display: flex;
+    flex-wrap: wrap; /* Para que las mesas se ajusten en varias filas */
+    list-style-type: none;
+    padding: 0;
+  }
+
+
+  label{
+    font-size: large;
+  }
+  /* Estilo para los botones de eliminar */
+  button {
+    background-color: #ff4c4c; /* Rojo para indicar eliminación */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #323232; /* Rojo más fuerte al pasar el ratón */
+  }
+  
+  input[type="number"] {
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  input[type="time"] {
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  button, .btns-eliminar {
+    background-color: #ff4c4c; /* Rojo para indicar eliminación */
+    color: white;
+    border: none;
+    padding: 5px 0px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: auto; /* El ancho del botón se ajusta al contenido */
+    min-width: 50px; /* Ancho mínimo para que no sea demasiado pequeño */
+    text-align: center; /* Centra el texto dentro del botón */
+    margin: 5px; /* Añadir un margen alrededor para separación */
+}
+ 
+  
+  h3 {
+    margin-top: 20px;
+  }
+  
+  h1{
+    margin-top: 40px;
+  }

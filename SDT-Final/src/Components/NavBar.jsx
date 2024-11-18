@@ -62,6 +62,7 @@ function Navbar() {
             {role === 'admin' && (
               <>
                 <li><Link to="/ver-reservas-admin">Ver Reservas</Link></li>
+                <li><Link to="/AdminRes">Administrar</Link></li>
               </>
             )}
             <li><Link to="/contacto">Contacto</Link></li>

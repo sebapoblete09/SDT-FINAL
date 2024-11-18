@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, doc, getDocs, serverTimestamp, where, query, getDoc } from 'firebase/firestore';
-import { db } from '../firebase/firebaseconfig';
+import { db } from '../Firebase/firebaseconfig';
 import horas from '../const/horas';
 import Login from './Login';
 import emailjs from 'emailjs-com';
@@ -17,8 +17,33 @@ function Reserva() {
   const [fecha, setFecha] = useState('');
   const [horario, setHorario] = useState('');
   const [mesasOcupadas, setMesasOcupadas] = useState([]);
-  const mesas = [1, 2, 3, 4, 5, 6];
+  const [mesas, setMesas] = useState([]);  // Estado para las mesas
+  const [horasDisponibles, setHoras] = useState(horas);  // Estado para las horas
   const today = new Date().toISOString().split('T')[0];
+
+  useEffect(() => {
+    const fetchDisponibilidad = async () => {
+      if (fecha) {
+        const docRef = doc(db, 'disponibilidad', fecha);
+        const docSnap = await getDoc(docRef);
+  
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          // Asegurarse de que las mesas y horarios se actualicen correctamente
+          const mesasAdicionales = data.mesasAdicionales || [];
+          setMesas([1, 2, 3, 4, 5, 6, ...mesasAdicionales]);  // Siempre añades las mesas predeterminadas
+          const horariosAdicionales = data.horariosAdicionales || [];
+          setHoras([...horas, ...horariosAdicionales.map(h => ({ value: h, label: h }))]);  // Combinas las horas predeterminadas con las adicionales
+        } else {
+          setMesas([1, 2, 3, 4, 5, 6]);  // Si no hay datos adicionales, usa las mesas predeterminadas
+          setHoras(horas);  // Usa los horarios predeterminados
+        }
+      }
+    };
+  
+    fetchDisponibilidad();
+  }, [fecha]);  // Esto se ejecutará cada vez que cambie la fecha
+  
 
   useEffect(() => {
     const fetchMesasOcupadas = async () => {
@@ -30,13 +55,13 @@ function Reserva() {
         querySnapshot.forEach((doc) => {
           ocupadas.push(doc.data().mesa);
         });
-        setMesasOcupadas(ocupadas);
+        setMesasOcupadas(ocupadas);  // Establece las mesas ocupadas correctamente
       } else {
-        setMesasOcupadas([]);
+        setMesasOcupadas([]);  // Si no se ha seleccionado una fecha o horario, reinicia las mesas ocupadas
       }
     };
     fetchMesasOcupadas();
-  }, [fecha, horario]);
+  }, [fecha, horario]);  // Esto se ejecutará cada vez que cambien la fecha o el horario
 
   useEffect(() => {
     const fetchUsuario = async (uid) => {
@@ -52,7 +77,7 @@ function Reserva() {
         console.error("Error al obtener el usuario: ", error);
       }
     };
-  
+
     const token = localStorage.getItem('token');
     const uid = localStorage.getItem('uid');
     
@@ -124,7 +149,6 @@ function Reserva() {
       }
     }
   };
-
   return (
     <main>
       {isAuthenticated ? (
@@ -154,7 +178,7 @@ function Reserva() {
                 <label htmlFor="horario">Horario:</label>
                 <select name="horario" id="horario" required value={horario} onChange={(e) => setHorario(e.target.value)}>
                   <option value="" disabled>Seleccione el horario</option>
-                  {horas.map(horario => (
+                  {horasDisponibles.map(horario => (
                     <option key={horario.value} value={horario.label}>
                       {horario.label}
                     </option>
@@ -179,12 +203,8 @@ function Reserva() {
                     </button>
                   ))}
                 </div>
-                {mesaSeleccionada && (
-                  <button id='confirmar-mesa' onClick={handleConfrimationReserv}>
-                    Confirmar Reservación
-                  </button>
-                )}
-                <button type='button' id='volver' onClick={handleReserva}>Volver atrás</button>
+                {mesaSeleccionada && <button onClick={handleConfrimationReserv}>Confirmar Reserva</button>}
+                <button onClick={handleReserva}>Volver a la reserva</button>
               </div>
             </>
           )}
