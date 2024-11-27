@@ -15,7 +15,8 @@ function Menu() {
         precio: '',
     });
     const [editingDish, setEditingDish] = useState(null); // Estado para manejar la edición
-    const [showAddForm, setShowAddForm] = useState(false);
+    const [showModal, setShowModal] = useState(false); // Controlar la visibilidad del modal
+    const [modalType, setModalType] = useState(''); // 'add' o 'edit'
 
     useEffect(() => {
         const checkAuthStatus = () => {
@@ -64,7 +65,7 @@ function Menu() {
             await addDoc(collection(db, 'menu'), newDish);
             setNewDish({ Nombre: '', Descripcion: '', Tipo: '', precio: '' });
             fetchMenuItems();
-            setShowAddForm(false);
+            setShowModal(false);
         } catch (error) {
             console.error('Error al agregar el plato: ', error);
         }
@@ -75,9 +76,7 @@ function Menu() {
         fetchMenuItems();
     };
 
-    const handleEditClick = (item) => {
-        setEditingDish(item); // Cargar el plato en edición
-    };
+   
 
     const handleUpdate = async () => {
         if (!editingDish.Nombre || !editingDish.Descripcion || !editingDish.precio) {
@@ -94,6 +93,7 @@ function Menu() {
                 precio: editingDish.precio,
             });
             setEditingDish(null); // Salir del modo de edición
+            setShowModal(false);
             fetchMenuItems();
         } catch (error) {
             console.error('Error al actualizar el plato: ', error);
@@ -106,6 +106,19 @@ function Menu() {
 
     const filteredMenuItems = menuItems.filter(item => item.Tipo === selectedCategory);
 
+
+    const openModal = (type, item = null) => {
+        setModalType(type);
+        if (type === 'edit') setEditingDish(item);
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+        setEditingDish(null);
+        setNewDish({ Nombre: '', Descripcion: '', Tipo: '', precio: '' });
+    };
+    
     return (
         <main className="menu-section">
             {isAuthenticated ? (
@@ -128,107 +141,20 @@ function Menu() {
                                 {role === 'admin' && (
                                     <div>
                                         <button onClick={() => handleDelete(item.id)} className="deleteButton">Eliminar</button>
-                                        <button onClick={() => handleEditClick(item)} className="editButton">Editar</button>
+                                        <button onClick={() => openModal('edit',item)} className="editButton">Editar</button>
                                     </div>
                                 )}
                             </div>
                         ))}
-                        <div>
-                            <button onClick={() => setShowAddForm(true)}>Agregar Plato</button>
-                        </div>
-                    </div>
 
-                    {showAddForm && (
-                        <div className="add-form">
-                            <h3>Agregar Nuevo Plato</h3>
-                            <form onSubmit={(e) => e.preventDefault()}>
-                                <input
-                                    type="text"
-                                    name="Nombre"
-                                    placeholder="Nombre del Plato"
-                                    value={newDish.Nombre}
-                                    onChange={handleInputChange}
-                                />
-                                <input
-                                    type="text"
-                                    name="Descripcion"
-                                    placeholder="Descripción"
-                                    value={newDish.Descripcion}
-                                    onChange={handleInputChange}
-                                />
-                                <select
-                                    name="Tipo"
-                                    value={newDish.Tipo}
-                                    onChange={handleInputChange}
-                                >
-                                    <option>Seleccione el tipo de entrada</option>
-                                    <option value="Entrada">Entrada</option>
-                                    <option value="Plato Principal">Plato Principal</option>
-                                    <option value="Postre">Postre</option>
-                                    <option value="Bebestible">Bebestible</option>
-                                </select>
-                                <label>Precio</label>
-                                <input
-                                    type="number"
-                                    name="precio"
-                                    min="1000"
-                                    placeholder="Precio"
-                                    value={newDish.precio}
-                                    onChange={handleInputChange}
-                                />
-                                <div>
-                                    <button type="button" className="btns" onClick={AgregarPlato}>Agregar Plato</button>
-                                    <button type="button" className="btns" onClick={() => setShowAddForm(false)}>Cancelar</button>
-                                </div>
-                            </form>
-                        </div>
-                    )}
+                        {role === 'admin' && (
+                            <div>
+                                <button onClick={() => openModal('add')}>Agregar Plato</button>
+                            </div>
 
-                    {editingDish && (
-                        <div className="edit-form">
-                            <h3>Editar Plato</h3>
-                            <form onSubmit={(e) => e.preventDefault()}>
-                                <input
-                                    type="text"
-                                    name="Nombre"
-                                    placeholder="Nombre del Plato"
-                                    value={editingDish.Nombre}
-                                    onChange={handleInputChange}
-                                />
-                                <input
-                                    type="text"
-                                    name="Descripcion"
-                                    placeholder="Descripción"
-                                    value={editingDish.Descripcion}
-                                    onChange={handleInputChange}
-                                />
-                                <select
-                                    name="Tipo"
-                                    value={editingDish.Tipo}
-                                    onChange={handleInputChange}
-                                >
-                                    <option>Seleccione el tipo de entrada</option>
-                                    <option value="Entrada">Entrada</option>
-                                    <option value="Plato Principal">Plato Principal</option>
-                                    <option value="Postre">Postre</option>
-                                    <option value="Bebestible">Bebestible</option>
-                                </select>
-                                <label>Precio</label>
-                                <input
-                                    type="number"
-                                    name="precio"
-                                    min="1000"
-                                    placeholder="Precio"
-                                    value={editingDish.precio}
-                                    onChange={handleInputChange}
-                                />
-                                <div>
-                                    <button type="button" className="btns" onClick={handleUpdate}>Guardar Cambios</button>
-                                    <button type="button" className="btns" onClick={() => setEditingDish(null)}>Cancelar</button>
-                                </div>
-                            </form>
-                        </div>
-                    )}
+                        )}
+                        
+                    </div>                    
                 </>
             ) : (
                 <>
@@ -249,8 +175,104 @@ function Menu() {
                                 <span className="menuPrice">${item.precio}</span>
                             </div>
                         ))}
-                    </div>
+                    </div>               
                 </>
+            )}
+
+            {showModal && (
+                 <div className="modal-overlay">
+                 <div className="modal-content">
+                     <button className="close-button" onClick={closeModal}>
+                         &times;
+                     </button>
+                     {modalType === 'add' ? (
+                         <div>
+                             <h3>Agregar Nuevo Plato</h3>
+                             <form onSubmit={(e) => e.preventDefault()}>
+                                 <input
+                                     type="text"
+                                     name="Nombre"
+                                     placeholder="Nombre del Plato"
+                                     value={newDish.Nombre}
+                                     onChange={handleInputChange}
+                                 />
+                                 <input
+                                     type="text"
+                                     name="Descripcion"
+                                     placeholder="Descripción"
+                                     value={newDish.Descripcion}
+                                     onChange={handleInputChange}
+                                 />
+                                 <select
+                                     name="Tipo"
+                                     value={newDish.Tipo}
+                                     onChange={handleInputChange}
+                                 >
+                                     <option>Seleccione el tipo</option>
+                                     <option value="Entrada">Entrada</option>
+                                     <option value="Plato Principal">Plato Principal</option>
+                                     <option value="Postre">Postre</option>
+                                     <option value="Bebestible">Bebestible</option>
+                                 </select>
+                                 <input
+                                     type="number"
+                                     name="precio"
+                                     placeholder="Precio"
+                                     value={newDish.precio}
+                                     min="0"
+                                     onChange={(e) => {
+                                         const value = e.target.value;
+                                         if (/^\d*$/.test(value)) {
+                                             handleInputChange(e);
+                                         }
+                                     }}
+                                 />
+                                 <button onClick={AgregarPlato}>Guardar</button>
+                             </form>
+                         </div>
+                        ):(
+                         <div>
+                                <h3>Editar Plato</h3>
+                                <form onSubmit={(e) => e.preventDefault()}>
+                                    <input
+                                        type="text"
+                                        name="Nombre"
+                                        placeholder="Nombre del Plato"
+                                        value={editingDish.Nombre}
+                                        onChange={handleInputChange}
+                                    />
+                                    <input
+                                        type="text"
+                                        name="Descripcion"
+                                        placeholder="Descripción"
+                                        value={editingDish.Descripcion}
+                                        onChange={handleInputChange}
+                                    />
+                                    <select
+                                        name="Tipo"
+                                        value={editingDish.Tipo}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option>Seleccione el tipo</option>
+                                        <option value="Entrada">Entrada</option>
+                                        <option value="Plato Principal">Plato Principal</option>
+                                        <option value="Postre">Postre</option>
+                                        <option value="Bebestible">Bebestible</option>
+                                    </select>
+                                    <input
+                                        type="number"
+                                        name="precio"
+                                        placeholder="Precio"
+                                        value={editingDish.precio}
+                                        min="0"
+                                        onChange={handleInputChange}
+                                    />
+                                    <button onClick={handleUpdate}>Guardar</button>
+                                </form>
+            </div>
+            )}
+            </div>
+            </div>
             )}
         </main>
     );
