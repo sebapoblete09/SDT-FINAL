@@ -16,6 +16,35 @@
     margin-top: 20px;
   }
   
+ 
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto; /* Permite el desplazamiento */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* El modal empieza desde arriba */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+}
+
+.modal-content {
+    background-color: #323232;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Mantén 'relative' dentro del overlay */
+    max-width: 900px;
+    margin-top: 25px; /* Ajusta la distancia del modal al scroll inicial */
+    padding: 20px;
+}
+
+
+.modal-content h1{
+    padding-top: 1px;
+}
+
 h1{
     font-size: 3em;
     text-align: center;
@@ -72,8 +101,7 @@ p {
     color: white; /* Color del texto al pasar el ratón */
 }
 
-
-form {
+.form-reserv{
     display: flex;
     flex-direction: column; /* Organiza los elementos en columna */
     background-color:#202020; /* Fondo del formulario */
@@ -127,6 +155,7 @@ input, select {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20%;
 }
+
   
 .reservation-list h1 {
     text-align: center;
@@ -151,10 +180,18 @@ input, select {
 .reservation-info {
     font-size: 15px;
     color: whitesmoke;
+
 }
 
 
-  
+.btn-volver{
+    padding-top: 5px;
+    text-align: end;
+}
+
+.btn-volver button:hover{
+    background-color: #746743;
+}
 /* Estilo del botón de cancelar */
 .Button-container{
     padding-right: 20px;

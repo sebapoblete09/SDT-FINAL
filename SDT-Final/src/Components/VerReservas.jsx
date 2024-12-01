@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { collection, query, where, getDocs, updateDoc, doc, } from 'firebase/firestore';
-import { db } from '../firebase/firebaseconfig';
+import { db } from '../Firebase/firebaseconfig';
 import emailjs from 'emailjs-com';
+import ReservCard from './reservCard';
 import '../styles/reserva.css';
 
 function VerReservas() {
@@ -10,6 +11,9 @@ function VerReservas() {
   const [reservas, setReservas] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const reservasPorPagina = 4;
+  const [platos, setPlatos] = useState([]);
+  const [showModal, setShowModal] = useState(false); // Controlar la visibilidad del modal
+  const [reservaAct, setReservAct] = useState([])
 
   useEffect(() => {
     const fetchReservas = async (uid) => {
@@ -21,8 +25,8 @@ function VerReservas() {
         const userReservas = querySnapshot.docs
           .map(doc => ({ id: doc.id, ...doc.data() }))
           .sort((a, b) => new Date(b.fecha) - new Date(a.fecha)); // Ordenar por fecha
-
         setReservas(userReservas);
+        setPlatos(userReservas.platos)
       } catch (error) {
         console.error("Error al obtener las reservas: ", error);
       }
@@ -93,6 +97,17 @@ function VerReservas() {
   const totalPages = Math.ceil(reservas.length / reservasPorPagina);
   const currentPage = Math.floor(currentIndex / reservasPorPagina) + 1;
 
+
+  const openModal = (reserva) => {
+    setReservAct(reserva); // Establecer la reserva seleccionada
+    console.log(reserva)
+    setShowModal(true); // Abrir el modal
+  };
+
+const closeModal = () => {
+    setShowModal(false);
+
+};
   return (
     <main className="reservation-list">
       {isAuthenticated ? (
@@ -103,6 +118,7 @@ function VerReservas() {
               {reservas.slice(currentIndex, currentIndex + reservasPorPagina).map(reserva => (
                 <div key={reserva.id} className="reservation-item">
                   <div className="reservation-info">
+                    <p><strong>{reserva.codigoReserva}</strong></p>
                     <p><strong>Fecha:</strong> {reserva.fecha}</p>
                     <p><strong>Horario:</strong> {reserva.horario}</p>
                   </div>
@@ -119,6 +135,7 @@ function VerReservas() {
                         </button>
                       </div>
                     )}
+                    <button className='delete-button' onClick={() => openModal(reserva.platos)}>Ver Mas.</button>
                   </div>
                 </div>
               ))}
@@ -140,6 +157,23 @@ function VerReservas() {
         </div>
       ) : (
         <p>Por favor, inicia sesión para ver tus reservas.</p>
+      )}
+
+      {showModal &&(
+        <div className='modal-overlay'>
+          <div className='modal-content'>
+          
+          <ReservCard 
+           Reserva={reservaAct}
+            
+            /> {/* Pasar la reserva seleccionada */}
+            <div className='btn-volver'>
+            <button  onClick={closeModal}>volver</button>
+            </div>
+            
+          </div>
+          
+        </div>
       )}
     </main>
   );

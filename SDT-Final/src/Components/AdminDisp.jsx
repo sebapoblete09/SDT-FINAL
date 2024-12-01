@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../Firebase/firebaseconfig';
 import '../styles/AdminDips.css';
-import horas from '../const/horas'
+
 
 function AdminDisponibilidad() {
   const [fecha, setFecha] = useState('');

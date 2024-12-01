@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc, doc, getDocs, serverTimestamp, where, query, getDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, getDocs, serverTimestamp, where, query, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { db } from '../Firebase/firebaseconfig';
 import horas from '../const/horas';
 import Login from './Login';
@@ -112,12 +112,55 @@ function Reserva() {
     setMesaSeleccionada(mesa); // Establece la mesa seleccionada
   };
 
+  // Función para obtener y actualizar el contador
+  const obtenerYActualizarContador = async () => {
+    const counterRef = doc(db, 'counters', 'reservaCode');  // Referencia al documento de contador
+  
+    try {
+      // Verificar si el documento existe
+      const counterSnap = await getDoc(counterRef);
+  
+      if (counterSnap.exists()) {
+        // Si el documento existe, obtenemos el valor actual y lo incrementamos
+        const currentValue = counterSnap.data().value;
+        const newValue = currentValue + 1;
+  
+        // Actualizar el documento con el nuevo valor
+        await updateDoc(counterRef, { value: newValue });
+  
+        return currentValue;  // Retornar el valor anterior
+      } else {
+        // Si no existe el documento, crearlo con el valor inicial
+        await setDoc(counterRef, { value: 100 });  // Establecer el valor inicial a 1
+        return 0;  // Retornar 0 ya que esta es la primera reserva
+      }
+    } catch (error) {
+      console.error("Error al obtener o actualizar el contador:", error);
+      throw new Error("Hubo un problema con el contador de la reserva");
+    }
+  };
+
+ // Función para generar el código de reserva
+const generarCodigoReserva = (contador) => {
+  const prefijo = "RES";  // Prefijo para el código
+  const codigo = `${prefijo}-${String(contador).padStart(4, '0')}`;  // Código final
+
+  return codigo;
+};
   const handleConfrimationReserv = async () => {
     const uid = localStorage.getItem('uid');
+    
     if (mesaSeleccionada && grupo && fecha && horario) {
       try {
+        // Obtenemos el contador de reservas e incrementamos su valor
+      const contador = await obtenerYActualizarContador();
+
+      // Generamos el código de reserva único
+      const codigoReserva = generarCodigoReserva(contador);
+
         await addDoc(collection(db, "reservas"), {
           uid: uid,
+          codigoReserva: codigoReserva,  // Añadimos el código de reserva
           estado: "Confirmada",
           nombre: usuario.nombre,
           correo: usuario.correo,
@@ -136,8 +179,8 @@ function Reserva() {
           `- Plato: ${plato.Nombre}\n  Cantidad: ${plato.cantidad}\n  Precio unitario: $${plato.precio}\n  Total: $${plato.precio * plato.cantidad}`
         ).join('\n\n');
         
-        let messagueComfirm = `Nombre: ${usuario.nombre}\nEmail: ${usuario.correo}\nTelefono: ${usuario.telefono}\nTamaño del grupo: ${grupo}\nFecha: ${fecha}\nHorario: ${horario}\nN° de mesa: ${mesaSeleccionada}\n\nMenu reservado:\n\n${menuReservado}\n\nPresupuesto: ${presupuesto}`;
-        messagueComfirm += "\n\nMuchas gracias por su preferencia";
+        let messagueComfirm = `Codigo reserva: ${codigoReserva}\nNombre: ${usuario.nombre}\nEmail: ${usuario.correo}\nTelefono: ${usuario.telefono}\nTamaño del grupo: ${grupo}\nFecha: ${fecha}\nHorario: ${horario}\nN° de mesa: ${mesaSeleccionada}\n\nMenu reservado:\n\n${menuReservado}\n\nPresupuesto: ${presupuesto}`;
+        messagueComfirm += "\n\nMuchas gracias por su preferencia \n\nPuedes ver tu reserva en:\nhttps://sabores-de-la-tierra-81626.web.app";
         
 
         const templateParams = {
@@ -333,7 +376,7 @@ function Reserva() {
               </>
           ): reserva ?(
             <>
-            <form>
+            <form className='form-reserv'>
               <h1>¡Reserva ahora!</h1>
               <p>Nombre: {usuario.nombre}</p>
               <p>Correo: {usuario.correo}</p>

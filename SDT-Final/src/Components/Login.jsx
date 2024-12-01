@@ -1,10 +1,10 @@
 // Login.jsx
 import React, { useState , useEffect} from 'react';
 import { useNavigate,  } from 'react-router-dom';
-import { auth } from '../firebase/firebaseconfig';
+import { auth } from '../Firebase/firebaseconfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore'; 
-import { db } from '../firebase/firebaseconfig'; 
+import { db } from '../Firebase/firebaseconfig'; 
 import '../styles/login.css';
 
 function Login() {
