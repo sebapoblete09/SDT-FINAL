@@ -23,6 +23,9 @@ function Reserva() {
   const [horasDisponibles, setHoras] = useState(horas);  // Estado para las horas
   const today = new Date().toISOString().split('T')[0]; 
   const [modal, setModal] = useState(false);
+  const [platosSeleccionados, setPlatosSeleccionados] = useState([]);
+  const [presupuesto, setPresupuesto] = useState(0);
+   const [cantidadSeleccionada, setCantidadSeleccionada] = useState({}); // Almacena las cantidades por plato
 
 
 
@@ -123,12 +126,19 @@ function Reserva() {
           fecha: fecha,
           horario: horario,
           mesa: mesaSeleccionada,
-          createdAt: serverTimestamp()
+          createdAt: serverTimestamp(),
+          platos : platosSeleccionados,
+          precioInicial : presupuesto,
         });
         alert("Reservación confirmada con éxito!, por favor verifica tu correo");
 
-        let messagueComfirm = `Nombre: ${usuario.nombre}\nEmail: ${usuario.correo}\nTelefono: ${usuario.telefono}\nTamaño del grupo: ${grupo}\nFecha: ${fecha}\nHorario: ${horario}\nN° de mesa: ${mesaSeleccionada}`;        
+        let menuReservado = platosSeleccionados.map(plato => 
+          `- Plato: ${plato.Nombre}\n  Cantidad: ${plato.cantidad}\n  Precio unitario: $${plato.precio}\n  Total: $${plato.precio * plato.cantidad}`
+        ).join('\n\n');
+        
+        let messagueComfirm = `Nombre: ${usuario.nombre}\nEmail: ${usuario.correo}\nTelefono: ${usuario.telefono}\nTamaño del grupo: ${grupo}\nFecha: ${fecha}\nHorario: ${horario}\nN° de mesa: ${mesaSeleccionada}\n\nMenu reservado:\n\n${menuReservado}\n\nPresupuesto: ${presupuesto}`;
         messagueComfirm += "\n\nMuchas gracias por su preferencia";
+        
 
         const templateParams = {
           messague: messagueComfirm,
@@ -165,6 +175,7 @@ function Reserva() {
   const handleModal = () => {
     setModal(true); // Mostrar modal de selección de platos
     setSelectMenu(false); // Ocultar preselección
+    setSelectMesa(false)
   };
 
 
@@ -208,6 +219,35 @@ function Reserva() {
 
   const filteredMenuItems = menuItems.filter(item => item.Tipo === selectedCategory);
 
+  const addDish = (item) => {
+    // Verifica si el plato ya está en la lista
+    const existingDish = platosSeleccionados.find(plato => plato.id === item.id);
+    if (existingDish) {
+      // Si el plato ya está, aumenta la cantidad
+      existingDish.cantidad += cantidadSeleccionada[item.id];
+    } else {
+      // Si el plato no está, lo agrega con la cantidad seleccionada
+      platosSeleccionados.push({ ...item, cantidad: cantidadSeleccionada[item.id] });
+    }
+    
+    // Llama a calPres para recalcular el presupuesto
+    calPres();
+  };
+
+  const calPres = () => {
+    let total = 0;
+    platosSeleccionados.forEach(plato => {
+      total += plato.precio * plato.cantidad;
+    });
+    setPresupuesto(total); // Actualiza el estado del presupuesto
+  };
+
+  const handleCantidadChange = (id, cantidad) => {
+    setCantidadSeleccionada((prev) => ({
+      ...prev,
+      [id]: cantidad,
+    }));
+  };
 
   return (
     <main >
@@ -226,15 +266,16 @@ function Reserva() {
           </>
           ):modal?(
               <>
-              <div className='SelectMenu'>
-              <div className='category-buttons'>
-                          <button onClick={() => handleCategoryChange('Entrada')}>Entradas</button>
-                          <button onClick={() => handleCategoryChange('Plato Principal')}>Plato Principal</button>
-                          <button onClick={() => handleCategoryChange('Postre')}>Postres</button>
-                          <button onClick={() => handleCategoryChange('Bebestible')}>Bebestible</button>
-              </div>
+                <div className='SelectMenu'>
+                  <div className='selecction'>
+                    <div className='category-buttons'>
+                          <button type='button' onClick={() => handleCategoryChange('Entrada')}>Entradas</button>
+                          <button type='button' onClick={() => handleCategoryChange('Plato Principal')}>Plato Principal</button>
+                          <button type='button' onClick={() => handleCategoryChange('Postre')}>Postres</button>
+                          <button type='button' onClick={() => handleCategoryChange('Bebestible')}>Bebestible</button>
+                    </div>
 
-              <div className='menu-items'>
+                    <div className='menu-items'>
                           {filteredMenuItems.map((item) => (
                               <div key={item.id} className='menu-item'>
                                   <div >
@@ -245,23 +286,50 @@ function Reserva() {
                                     <span >${item.precio}</span>
                                     <div>
                                     <label htmlFor="cantidad">Cantidad: </label>
-                                    <input type="number"  min={0} max={15}/>
+                                    <input
+                                      id={`cantidad-${item.id}`}
+                                      type="number"
+                                      min={0}
+                                      max={15}
+                                      value={cantidadSeleccionada[item.id] || ''}
+                                      onChange={(e) => handleCantidadChange(item.id, parseInt(e.target.value, 10) || 0)}
+                                    />
                                     </div>
                                     
-                                    <button type='button'>Agregar plato</button>
+                                    <button type="button"
+                                        onClick={() => addDish(item)}
+                                    >
+                                        Agregar plato
+                                      </button>
                                   </div>
                                  
                               </div>
-                          ))}   
-                          <div className='opc'>
-                            <button>Confirmar platos</button>
-                            <button >Volver atras</button>
-                      </div>   
+                          ))}     
+                  </div>    
+                </div>
 
-                </div>          
+                <div className="resumen">
+                  <h2>Resumen de la reserva</h2>
+                  <ul>
+                    {platosSeleccionados.map((plato, index) => (
+                      <li key={index}>
+                        <p><strong>Plato:</strong> {plato.Nombre}</p>
+                        <p><strong>Precio unitario:</strong> ${plato.precio}</p>
+                        <p><strong>Cantidad:</strong> {plato.cantidad}</p>
+                        <p><strong>Total:</strong> ${plato.precio * plato.cantidad}</p>
+                        <hr />
+                      </li>
+                    ))}
+                  </ul>
+                  <h3>Total a pagar: ${presupuesto}</h3>
+                  <div className='opc'>
+                    <button type='button' onClick={()=>(
+                      handleConfrimationReserv()
+                      )}>Confirmar platos</button>
+                  <button  type='button' onClick={handleVolverMesas}>Volver atras</button>
+                  </div> 
+                </div>
               </div>
-
-                          
               </>
           ): reserva ?(
             <>

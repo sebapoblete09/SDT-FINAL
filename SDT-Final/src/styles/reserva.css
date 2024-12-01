@@ -1,15 +1,21 @@
-.reservation{
-    background-color:#323232; /* Fondo del formulario */
-    padding: 15px;
-    border-radius: 10px; /* Esquinas redondeadas */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra */
-    margin: 60px auto 20px auto; /* Margen superior más grande para separarlo del navbar */
-    max-width: 900px; /* Ancho máximo */
-    margin-top: 20%;
-    background-color: #202020;
-    overflow-y: auto;
-}
-
+.SelectMenu {
+    display: flex;
+    flex-direction: wrap;
+    gap: 16px;
+  }
+  
+  .menu-items {
+    max-height: 400px; /* Ajusta según sea necesario */
+  }
+  
+  .resumen {
+    max-height: 300px; /* Ajusta según el tamaño del resumen */
+  }
+  
+  .opc {
+    margin-top: 20px;
+  }
+  
 h1{
     font-size: 3em;
     text-align: center;
@@ -26,8 +32,17 @@ p {
     font-size: 1.24em;
 }
 
-#mesa-container {
+#mesa-container, .preseleccion {
     text-align: center; /* Centra el contenido de texto */
+    background-color:#202020; /* Fondo del formulario */
+    padding: 15px;
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra */
+    margin: 60px auto 20px auto; /* Margen superior más grande para separarlo del navbar */
+    max-width: 900px; /* Ancho máximo */
+    margin-top: 20%;
+    background-color: #202020;
+    overflow-y: auto;
 }
 
 #mesas {
@@ -61,6 +76,15 @@ p {
 form {
     display: flex;
     flex-direction: column; /* Organiza los elementos en columna */
+    background-color:#202020; /* Fondo del formulario */
+    padding: 15px;
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra */
+    margin: 60px auto 20px auto; /* Margen superior más grande para separarlo del navbar */
+    max-width: 900px; /* Ancho máximo */
+    margin-top: 20%;
+    background-color: #202020;
+    overflow-y: auto;
 }
 
 label {
@@ -246,15 +270,7 @@ input, select {
     color: #e81010; /* Color del texto al pasar el ratón */
 }
 
-/* Estilo para los items del menú */
-.menu-items {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-height: 400px;
-    padding: 20px;
-    width: 700px;   
-}
+
 
 .menu-item {
    
