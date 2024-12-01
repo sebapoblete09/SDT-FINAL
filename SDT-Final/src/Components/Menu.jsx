@@ -61,10 +61,15 @@ function Menu() {
             return;
         }
 
+        if(!newDish.Tipo) {
+            alert("Por favor, selecciona un tipo de plato.");
+        return;}
+
         try {
             await addDoc(collection(db, 'menu'), newDish);
             setNewDish({ Nombre: '', Descripcion: '', Tipo: '', precio: '' });
             fetchMenuItems();
+            alert('Plato agregado con exito')
             setShowModal(false);
         } catch (error) {
             console.error('Error al agregar el plato: ', error);
@@ -137,13 +142,17 @@ function Menu() {
                                     <h3 className="menuName">{item.Nombre}</h3>
                                     <p className="menuDescription">{item.Descripcion}</p>
                                 </div>
-                                <span className="menuPrice">${item.precio}</span>
-                                {role === 'admin' && (
+                                <div>
+                                    <span className="menuPrice">${item.precio}</span>
+                                    {role === 'admin' && (
                                     <div>
                                         <button onClick={() => handleDelete(item.id)} className="deleteButton">Eliminar</button>
                                         <button onClick={() => openModal('edit',item)} className="editButton">Editar</button>
                                     </div>
                                 )}
+                                </div>
+                                
+                                
                             </div>
                         ))}
 
@@ -208,7 +217,7 @@ function Menu() {
                                      value={newDish.Tipo}
                                      onChange={handleInputChange}
                                  >
-                                     <option>Seleccione el tipo</option>
+                                     <option value="" disabled>Seleccione el tipo</option>
                                      <option value="Entrada">Entrada</option>
                                      <option value="Plato Principal">Plato Principal</option>
                                      <option value="Postre">Postre</option>

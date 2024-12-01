@@ -4,9 +4,10 @@
     border-radius: 10px; /* Esquinas redondeadas */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra */
     margin: 60px auto 20px auto; /* Margen superior más grande para separarlo del navbar */
-    max-width: 500px; /* Ancho máximo */
+    max-width: 900px; /* Ancho máximo */
     margin-top: 20%;
     background-color: #202020;
+    overflow-y: auto;
 }
 
 h1{
@@ -219,6 +220,110 @@ input, select {
         padding: 8px 10px; /* Ajusta el padding de los botones de paginación */
     }
 }
+
+
+
+
+.category-buttons {
+    display: flex;
+    justify-content: center;
+
+}
+
+.category-buttons button {
+    padding: 12px 10px; /* Espaciado dentro del botón */
+    background-color: #e81010; /* Color de fondo */
+    color: whitesmoke; /* Color de texto */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 1.1em;
+    cursor: pointer; /* Cursor de mano */
+    transition: background-color 0.3s; /* Transición para hover */
+}
+
+.category-buttons button:hover {
+    background-color: #323232; /* Color al pasar el ratón */
+    color: #e81010; /* Color del texto al pasar el ratón */
+}
+
+/* Estilo para los items del menú */
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 400px;
+    padding: 20px;
+    width: 700px;   
+}
+
+.menu-item {
+   
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #746743;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+
+.menu-item h3 {
+    font-size: 1.5em; /* Tamaño de texto para el nombre */
+    color: whitesmoke;
+    text-align: left;
+    margin-right: 20px;
+}
+
+.menu-item p {
+    font-size: 1.1em; /* Tamaño de texto para la descripción */
+    color: #ccc;
+    text-align: left;
+    margin-right: 20px;
+}
+
+.menu-item span {
+    font-size: 1.4em; /* Tamaño de texto para el precio */
+    color: #e81010;
+}
+
+.menu-item button {
+    padding: 10px 15px;
+    background-color: #e81010;
+    color: whitesmoke;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transición para hover */
+}
+
+.menu-item button:hover {
+    background-color: #323232; /* Color al pasar el ratón */
+    color: #e81010; /* Color del texto al pasar el ratón */
+}
+
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .category-buttons {
+        flex-direction: column; /* Los botones se apilan en móviles */
+        align-items: center; /* Centrar los botones */
+    }
+
+    .menu-item {
+        flex-direction: column; /* Los items del menú se apilan verticalmente */
+        align-items: center;
+    }
+
+    .menu-item h3, .menu-item p, .menu-item span {
+        text-align: center; /* Centrar el texto en los items */
+    }
+
+    .menu-item button {
+        width: 100%; /* Botón ocupa todo el ancho en móviles */
+        margin-top: 10px; /* Espacio entre el precio y el botón */
+    }
+}
+
 
 /* Responsive para tablets */
 @media (min-width: 769px) and (max-width: 1024px) {

@@ -12,6 +12,8 @@ function Reserva() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [usuario, setUsuario] = useState({ nombre: '', correo: '', telefono: '' });
   const [reserva, setReserva] = useState(true);
+  const [selectMenu, setSelectMenu] = useState(false);
+  const [selectMesa, setSelectMesa] = useState(false);
   const [mesaSeleccionada, setMesaSeleccionada] = useState(null);
   const [grupo, setGrupo] = useState('');
   const [fecha, setFecha] = useState('');
@@ -19,7 +21,10 @@ function Reserva() {
   const [mesasOcupadas, setMesasOcupadas] = useState([]);
   const [mesas, setMesas] = useState([]);  // Estado para las mesas
   const [horasDisponibles, setHoras] = useState(horas);  // Estado para las horas
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T')[0]; 
+  const [modal, setModal] = useState(false);
+
+
 
   useEffect(() => {
     const fetchDisponibilidad = async () => {
@@ -148,78 +153,184 @@ function Reserva() {
     }
   };
 
+  const handleMostrarPreseleccion = () => {
+    if (mesaSeleccionada) {
+      setSelectMenu(true); // Mostrar preselección
+      setModal(false); // Ocultar modal
+    } else {
+      alert("Por favor, seleccione una mesa antes de continuar.");
+    }
+  };
+  
+  const handleModal = () => {
+    setModal(true); // Mostrar modal de selección de platos
+    setSelectMenu(false); // Ocultar preselección
+  };
+
+
+
+  const handleVolverMesas = () => {
+    setSelectMenu(false);
+    setSelectMesa(true);
+  };
+
+  //Seleccioanr platos
+  const [menuItems, setMenuItems] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('Entrada');
+
+
+
+  useEffect(() => {
+      const checkAuthStatus = () => {
+          const token = localStorage.getItem('token');
+          setIsAuthenticated(!!token);
+  
+      };
+
+      checkAuthStatus();
+  }, []);
+
+  const fetchMenuItems = async () => {
+      const menuCollection = collection(db, 'menu');
+      const menuSnapshot = await getDocs(menuCollection);
+      const menuList = menuSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setMenuItems(menuList);
+  };
+
+  useEffect(() => {
+      fetchMenuItems();
+  }, []);
+
+
+  const handleCategoryChange = (category) => {
+      setSelectedCategory(category);
+  };
+
+  const filteredMenuItems = menuItems.filter(item => item.Tipo === selectedCategory);
+
+
   return (
-    <main>
+    <main >
       {isAuthenticated ? (
         <div className='reservation'>
-          {reserva ? (
+          
+          {selectMenu ? (
             <>
-              <form>
-                <h1>¡Reserva ahora!</h1>
-                <p>Nombre: {usuario.nombre}</p>
-                <p>Correo: {usuario.correo}</p>
-                <p>Teléfono: {usuario.telefono}</p>
-
-                <label htmlFor="grupo">Tamaño del grupo:</label>
-                <select name="grupo" id="grupo" required value={grupo} onChange={(e) => setGrupo(e.target.value)}>
-                  <option value="" disabled>Seleccione el tamaño del grupo</option>
-                  <option value="1">1 persona</option>
-                  <option value="2">2 personas</option>
-                  <option value="3">3 personas</option>
-                  <option value="4">4 personas</option>
-                  <option value="5">5 personas</option>
-                  <option value="6">6 personas</option>
-                </select>
-
-                <label htmlFor="fecha">Fecha:</label>
-                <input type="date" id='fecha' name='fecha' min={today} required value={fecha} onChange={(e) => setFecha(e.target.value)} />
-
-                <label htmlFor="horario">Horario:</label>
-                <select name="horario" id="horario" required value={horario} onChange={(e) => setHorario(e.target.value)}>
-                  <option value="" disabled>Seleccione el horario</option>
-                  {horasDisponibles.map(horario => (
-                    <option key={horario.value} value={horario.label}>
-                      {horario.label}
-                    </option>
-                  ))}
-                </select>
-
-                <button type='button' id='elegir-mesa' onClick={handleElegirMesa}>Elegir Mesa</button>
-              </form>
-            </>
-          ) : (
-            <>
-              <div id='mesa-container'>
-                <h3>Elige una mesa</h3>
-                <div id='mesas'>
-  {mesas.map(mesa => (
-    <button
-      key={mesa}
-      id='mesa-btn'
-      onClick={() => handleSeleccionarMesa(mesa)}
-      style={{
-        backgroundColor: mesasOcupadas.includes(mesa) ? 'red' : (mesaSeleccionada === mesa ? 'green' : ''),
-        pointerEvents: mesasOcupadas.includes(mesa) ? 'none' : 'auto', // Desactiva el botón si la mesa está ocupada
-      }}
-      disabled={mesasOcupadas.includes(mesa)} // Desactiva el botón si la mesa está ocupada
-    >
-      Mesa {mesa}
-    </button>
-  ))}
-</div>
-
-
-                <button onClick={handleReserva}>Cancelar</button>
-                {mesaSeleccionada && <button onClick={handleConfrimationReserv}>Confirmar Reserva</button>}
+            <div className='preseleccion'>
+              <h2>¿Quiere preseleccionar platos?</h2>
+              <p>De esta manera, el día de la reserva ya tendrá platos reservados y un presupuesto inicial.</p>
+              <button type='button' onClick={handleVolverMesas}>Regresar</button>
+              <button  type='button'onClick={handleModal}>Selecionar platos</button>
+              <button  type='button'onClick={handleConfrimationReserv}>Continuar sin seleccionar</button>
+            </div>
+          </>
+          ):modal?(
+              <>
+              <div className='SelectMenu'>
+              <div className='category-buttons'>
+                          <button onClick={() => handleCategoryChange('Entrada')}>Entradas</button>
+                          <button onClick={() => handleCategoryChange('Plato Principal')}>Plato Principal</button>
+                          <button onClick={() => handleCategoryChange('Postre')}>Postres</button>
+                          <button onClick={() => handleCategoryChange('Bebestible')}>Bebestible</button>
               </div>
-            </>
-          )}
-        </div>
-      ) : (
-        <Login />
-      )}
-    </main>
-  );
-}
 
-export default Reserva;
+              <div className='menu-items'>
+                          {filteredMenuItems.map((item) => (
+                              <div key={item.id} className='menu-item'>
+                                  <div >
+                                      <h3 >{item.Nombre}</h3>
+                                      <p >{item.Descripcion}</p>
+                                  </div>
+                                  <div>
+                                    <span >${item.precio}</span>
+                                    <div>
+                                    <label htmlFor="cantidad">Cantidad: </label>
+                                    <input type="number"  min={0} max={15}/>
+                                    </div>
+                                    
+                                    <button type='button'>Agregar plato</button>
+                                  </div>
+                                 
+                              </div>
+                          ))}   
+                          <div className='opc'>
+                            <button>Confirmar platos</button>
+                            <button >Volver atras</button>
+                      </div>   
+
+                </div>          
+              </div>
+
+                          
+              </>
+          ): reserva ?(
+            <>
+            <form>
+              <h1>¡Reserva ahora!</h1>
+              <p>Nombre: {usuario.nombre}</p>
+              <p>Correo: {usuario.correo}</p>
+              <p>Teléfono: {usuario.telefono}</p>
+      
+              <label htmlFor="grupo">Tamaño del grupo:</label>
+              <select name="grupo" id="grupo" required value={grupo} onChange={(e) => setGrupo(e.target.value)}>
+                <option value="" disabled>Seleccione el tamaño del grupo</option>
+                <option value="1">1 persona</option>
+                <option value="2">2 personas</option>
+                <option value="3">3 personas</option>
+                <option value="4">4 personas</option>
+                <option value="5">5 personas</option>
+                <option value="6">6 personas</option>
+              </select>
+      
+              <label htmlFor="fecha">Fecha:</label>
+              <input type="date" id='fecha' name='fecha' min={today} required value={fecha} onChange={(e) => setFecha(e.target.value)} />
+      
+              <label htmlFor="horario">Horario:</label>
+              <select name="horario" id="horario" required value={horario} onChange={(e) => setHorario(e.target.value)}>
+                <option value="" disabled>Seleccione el horario</option>
+                {horasDisponibles.map(horario => (
+                  <option key={horario.value} value={horario.label}>
+                    {horario.label}
+                  </option>
+                ))}
+              </select>
+      
+              <button type='button' id='elegir-mesa' onClick={handleElegirMesa}>Elegir Mesa</button>
+            </form>
+          </>
+
+          ): (<>
+            <div id='mesa-container'>
+              <h3>Elige una mesa</h3>
+              <div id='mesas'>
+          {mesas.map(mesa => (
+            <button
+              key={mesa}
+              id='mesa-btn'
+              onClick={() => handleSeleccionarMesa(mesa)}
+              style={{
+                backgroundColor: mesasOcupadas.includes(mesa) ? 'red' : (mesaSeleccionada === mesa ? 'green' : ''),
+                pointerEvents: mesasOcupadas.includes(mesa) ? 'none' : 'auto', // Desactiva el botón si la mesa está ocupada
+              }}
+              disabled={mesasOcupadas.includes(mesa)} // Desactiva el botón si la mesa está ocupada
+            >
+              Mesa {mesa}
+            </button>
+          ))}
+        </div>
+      
+      
+              <button onClick={handleReserva}>Cancelar</button>
+              {mesaSeleccionada && <button onClick={handleMostrarPreseleccion}>Confirmar Mesa</button>}
+            </div>
+          </>)}
+          </div>
+          ) : (
+            <Login />
+            )}
+    </main>
+
+
+  )};
+
+  export default Reserva;
