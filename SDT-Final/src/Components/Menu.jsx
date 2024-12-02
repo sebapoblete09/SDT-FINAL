@@ -60,21 +60,65 @@ function Menu() {
             alert('Por favor complete todos los campos');
             return;
         }
-
-        if(!newDish.Tipo) {
+    
+        if (!newDish.Tipo) {
             alert("Por favor, selecciona un tipo de plato.");
-        return;}
-
+            return;
+        }
+    
+        if (newDish.precio < 500) {
+            alert("El valor mínimo de un plato es de $500");
+            return;
+        }
+    
         try {
-            await addDoc(collection(db, 'menu'), newDish);
+            // Obtener todos los platos del menú
+            const menuSnapshot = await getDocs(collection(db, 'menu'));
+            
+            // Filtrar platos existentes con el mismo nombre (sin importar mayúsculas/minúsculas)
+            const existingDish = menuSnapshot.docs.filter(doc => 
+                doc.data().Nombre.toUpperCase() === newDish.Nombre.toUpperCase());
+            
+            if (existingDish.length > 0) {
+                // Verificar si ya existe un plato con el mismo nombre 
+                const isDuplicateNameAndDescription = existingDish.some(doc => 
+                    doc.data().Nombre.toUpperCase() === newDish.Nombre.toUpperCase() && 
+                    doc.data().Descripcion.toUpperCase() === newDish.Descripcion.toUpperCase());
+    
+                if (isDuplicateNameAndDescription) {
+                    alert('Ya existe un plato con el mismo nombre y descripción.');
+                    return;
+                }
+                
+                // Verificar si ya existe un plato con el mismo nombre y descripción diferente,
+                const isSameNameDifferentDescriptionOrPrice = existingDish.some(doc => 
+                    doc.data().Nombre.toUpperCase() === newDish.Nombre.toUpperCase() && 
+                    (doc.data().Descripcion.toUpperCase() !== newDish.Descripcion.toUpperCase() ));
+    
+                if (isSameNameDifferentDescriptionOrPrice) {
+                    // Si pasa todas las validaciones, agregamos el plato con el mismo nombre, pero diferente descripción y precio
+                    await addDoc(collection(db, 'menu'), newDish);
+                    alert('Plato agregado con éxito');
+                }
+    
+            } else {
+                // Si no existe un plato con el mismo nombre, agregamos el nuevo plato
+                await addDoc(collection(db, 'menu'), newDish);
+                alert('Plato agregado con éxito');
+            }
+    
+            // Limpiar el formulario y recargar la lista de platos
             setNewDish({ Nombre: '', Descripcion: '', Tipo: '', precio: '' });
             fetchMenuItems();
-            alert('Plato agregado con exito')
             setShowModal(false);
         } catch (error) {
             console.error('Error al agregar el plato: ', error);
         }
     };
+    
+    
+    
+    
 
     const handleDelete = async (id) => {
         await deleteDoc(doc(db, 'menu', id));
@@ -84,11 +128,23 @@ function Menu() {
    
 
     const handleUpdate = async () => {
+        // Validar solo si no estamos editando
         if (!editingDish.Nombre || !editingDish.Descripcion || !editingDish.precio) {
             alert('Por favor complete todos los campos');
             return;
         }
-
+    
+        if (editingDish.precio < 500) {
+            alert("El valor minimo de un plato es de $500");
+            return;
+        }
+    
+        // No es necesario validar el Tipo si ya existe en el plato que se está editando
+        if (!editingDish.Tipo && modalType === 'add') {
+            alert("Por favor, selecciona un tipo de plato.");
+            return;
+        }
+    
         try {
             const docRef = doc(db, 'menu', editingDish.id);
             await updateDoc(docRef, {
@@ -104,6 +160,7 @@ function Menu() {
             console.error('Error al actualizar el plato: ', error);
         }
     };
+    
 
     const handleCategoryChange = (category) => {
         setSelectedCategory(category);
@@ -228,7 +285,7 @@ function Menu() {
                                      name="precio"
                                      placeholder="Precio"
                                      value={newDish.precio}
-                                     min="0"
+                                     min="500"
                                      onChange={(e) => {
                                          const value = e.target.value;
                                          if (/^\d*$/.test(value)) {
@@ -262,7 +319,7 @@ function Menu() {
                                         value={editingDish.Tipo}
                                         onChange={handleInputChange}
                                     >
-                                        <option>Seleccione el tipo</option>
+                                        <option value="" disabled>Seleccione el tipo</option>
                                         <option value="Entrada">Entrada</option>
                                         <option value="Plato Principal">Plato Principal</option>
                                         <option value="Postre">Postre</option>
@@ -273,8 +330,13 @@ function Menu() {
                                         name="precio"
                                         placeholder="Precio"
                                         value={editingDish.precio}
-                                        min="0"
-                                        onChange={handleInputChange}
+                                        min="500"
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (/^\d*$/.test(value)) {
+                                                handleInputChange(e);
+                                            }
+                                        }}
                                     />
                                     <button onClick={handleUpdate}>Guardar</button>
                                 </form>

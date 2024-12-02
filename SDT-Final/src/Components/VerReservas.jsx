@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, getDocs, updateDoc, doc, } from 'firebase/firestore';
+import { collection, query, where, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../Firebase/firebaseconfig';
 import emailjs from 'emailjs-com';
 import ReservCard from './reservCard';
@@ -12,8 +12,10 @@ function VerReservas() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const reservasPorPagina = 4;
   const [platos, setPlatos] = useState([]);
-  const [showModal, setShowModal] = useState(false); // Controlar la visibilidad del modal
-  const [reservaAct, setReservAct] = useState([])
+  const [showModal, setShowModal] = useState(false);
+  const [reservaAct, setReservAct] = useState([]);
+  const [codigoReservaFiltro, setCodigoReservaFiltro] = useState(""); // Estado para el filtro por código de reserva
+  const [precio, setPrecio] = useState()
 
   useEffect(() => {
     const fetchReservas = async (uid) => {
@@ -24,9 +26,9 @@ function VerReservas() {
         // Mapear y ordenar las reservas de más recientes a más antiguas
         const userReservas = querySnapshot.docs
           .map(doc => ({ id: doc.id, ...doc.data() }))
-          .sort((a, b) => new Date(b.fecha) - new Date(a.fecha)); // Ordenar por fecha
+          .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); // Ordenar por fecha
         setReservas(userReservas);
-        setPlatos(userReservas.platos)
+        setPlatos(userReservas.platos);
       } catch (error) {
         console.error("Error al obtener las reservas: ", error);
       }
@@ -44,6 +46,16 @@ function VerReservas() {
     }
   }, []);
 
+  // Función para manejar la búsqueda por código de reserva
+  const handleFiltroCodigo = (e) => {
+    setCodigoReservaFiltro(e.target.value);
+  };
+
+  // Filtrar las reservas por código de reserva
+  const reservasFiltradas = reservas.filter((reserva) => 
+    reserva.codigoReserva.toLowerCase().includes(codigoReservaFiltro.toLowerCase())
+  );
+
   const handleCancel = async (id) => {
     try {
       const reservaRef = doc(db, "reservas", id);
@@ -54,28 +66,25 @@ function VerReservas() {
       ));
       alert("Reserva cancelada exitosamente.");
       
-      let messagueComfirm = `Nombre: ${reservaCancelada.nombre}\nEmail: ${reservaCancelada.correo}\nTelefono: ${reservaCancelada.telefono}\nTmaño del grupo: ${reservaCancelada.grupo}\nFecha: ${reservaCancelada.fecha}\nHorario: ${reservaCancelada.horario}\nN° de mesa: ${reservaCancelada.mesa}`;
-      messagueComfirm+= "\n\nLamentamos la cancelacion de su reserva, esperamos que nos visite denuevo.";
-
-     
+      let messagueComfirm = `Nombre: ${reservaCancelada.nombre}\nEmail: ${reservaCancelada.correo}\nTelefono: ${reservaCancelada.telefono}\nTamaño del grupo: ${reservaCancelada.grupo}\nFecha: ${reservaCancelada.fecha}\nHorario: ${reservaCancelada.horario}\nN° de mesa: ${reservaCancelada.mesa}`;
+      messagueComfirm+= "\n\nLamentamos la cancelación de su reserva, esperamos que nos visite de nuevo.";
 
       // Configura los datos del mensaje que se envía con EmailJS
       const templateParams = {
         messague: messagueComfirm,
-        subject: "Cancelacion de reserva!!",
-        email:reservaCancelada.correo,
+        subject: "Cancelación de reserva!!",
+        email: reservaCancelada.correo,
       };
 
       // Reemplaza 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', y 'YOUR_USER_ID' con tus valores de EmailJS
       emailjs.send('service_4ie5ez4', 'template_rqpmnbl', templateParams, 'msvOlm1YjIR6h1Xs5')
-      .then((response) => {
-        console.log('Reserva enviada con éxito:', response.status, response.text);
-        console.log(templateParams);
-      })
-      .catch((error) => {
-        console.error('Error al enviar el correo:', error);
-        alert('Hubo un error al enviar el correo');
-      });
+        .then((response) => {
+          console.log('Reserva enviada con éxito:', response.status, response.text);
+        })
+        .catch((error) => {
+          console.error('Error al enviar el correo:', error);
+          alert('Hubo un error al enviar el correo');
+        });
     } catch (error) {
       console.error("Error al cancelar la reserva: ", error);
       alert("Hubo un problema al cancelar la reserva.");
@@ -83,7 +92,7 @@ function VerReservas() {
   };
 
   const nextPage = () => {
-    if (currentIndex + reservasPorPagina < reservas.length) {
+    if (currentIndex + reservasPorPagina < reservasFiltradas.length) {
       setCurrentIndex(currentIndex + reservasPorPagina);
     }
   };
@@ -94,28 +103,41 @@ function VerReservas() {
     }
   };
 
-  const totalPages = Math.ceil(reservas.length / reservasPorPagina);
+  const totalPages = Math.ceil(reservasFiltradas.length / reservasPorPagina);
   const currentPage = Math.floor(currentIndex / reservasPorPagina) + 1;
 
-
-  const openModal = (reserva) => {
+  const openModal = (reserva,precioInicial) => {
     setReservAct(reserva); // Establecer la reserva seleccionada
-    console.log(reserva)
+    setPrecio(precioInicial)
+    console.log(reserva);
     setShowModal(true); // Abrir el modal
   };
 
-const closeModal = () => {
+  const closeModal = () => {
     setShowModal(false);
+  };
 
-};
   return (
     <main className="reservation-list">
       {isAuthenticated ? (
         <div>
           <h1>Mis Reservas</h1>
-          {reservas.length > 0 ? (
+
+          {/* Campo de búsqueda */}
+          <div>
+            <label htmlFor="codigoReserva">Buscar por código de reserva: </label>
+            <input 
+              id="codigoReserva"
+              type="text"
+              value={codigoReservaFiltro}
+              onChange={handleFiltroCodigo}
+              placeholder="Ingrese el código de reserva"
+            />
+          </div>
+
+          {reservasFiltradas.length > 0 ? (
             <>
-              {reservas.slice(currentIndex, currentIndex + reservasPorPagina).map(reserva => (
+              {reservasFiltradas.slice(currentIndex, currentIndex + reservasPorPagina).map(reserva => (
                 <div key={reserva.id} className="reservation-item">
                   <div className="reservation-info">
                     <p><strong>{reserva.codigoReserva}</strong></p>
@@ -135,7 +157,7 @@ const closeModal = () => {
                         </button>
                       </div>
                     )}
-                    <button className='delete-button' onClick={() => openModal(reserva.platos)}>Ver Mas.</button>
+                    <button className='delete-button' onClick={() => openModal(reserva.platos,reserva.precioInicial)}>Ver Más.</button>
                   </div>
                 </div>
               ))}
@@ -143,7 +165,7 @@ const closeModal = () => {
                 {currentIndex > 0 && (
                   <button onClick={prevPage}>Ver Anteriores</button>
                 )}
-                {currentIndex + reservasPorPagina < reservas.length && (
+                {currentIndex + reservasPorPagina < reservasFiltradas.length && (
                   <button onClick={nextPage}>Ver Siguientes</button>
                 )}
               </div>
@@ -159,20 +181,14 @@ const closeModal = () => {
         <p>Por favor, inicia sesión para ver tus reservas.</p>
       )}
 
-      {showModal &&(
+      {showModal && (
         <div className='modal-overlay'>
           <div className='modal-content'>
-          
-          <ReservCard 
-           Reserva={reservaAct}
-            
-            /> {/* Pasar la reserva seleccionada */}
+            <ReservCard Reserva={reservaAct} precioInicial = {precio} />
             <div className='btn-volver'>
-            <button  onClick={closeModal}>volver</button>
+              <button onClick={closeModal}>Volver</button>
             </div>
-            
           </div>
-          
         </div>
       )}
     </main>

@@ -150,11 +150,15 @@ input, select {
 .reservation-list {
     width: 950px;
     padding: 20px;
+    
     background-color: #202020;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20%;
+    margin-top: 25%; 
+    display: block;
 }
+
+/* Estilo cuando el contenedor tiene pocos elementos */
 
   
 .reservation-list h1 {

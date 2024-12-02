@@ -57,6 +57,7 @@ function Navbar() {
               <>
                 <li><Link to="/reservar">Reservar</Link></li>
                 <li><Link to="/mis-reservas">Ver mis Reservas</Link></li>
+                <li><Link to="/contacto">Contacto</Link></li>
               </>
             )}
             {role === 'admin' && (
@@ -65,7 +66,6 @@ function Navbar() {
                 <li><Link to="/AdminRes">Administrar</Link></li>
               </>
             )}
-            <li><Link to="/contacto">Contacto</Link></li>
             <li><button onClick={logout}>Cerrar Sesión</button></li>
           </ul>
         </nav>

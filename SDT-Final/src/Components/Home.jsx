@@ -10,7 +10,7 @@ function Home() {
   const [role, setRole] = useState(null);
 
   const [newsItems, setNewsItems] = useState([]);
-  const [newNews, setNewNews] = useState({ nombre: '', desc: '', img: '' });
+  const [newNews, setNewNews] = useState({ title: '', description: '', img: '' });
   const [editing, setEditing] = useState(null);
 
 
@@ -60,13 +60,13 @@ function Home() {
       });
     }
 
-    setNewNews({ nombre: '', desc: ''});
+    setNewNews({ title: '', description: ''});
     setEditing(null);
     fetchNews(); // Actualiza la lista de noticias
   };
 
   const handleEdit = (item) => {
-    setNewNews({ nombre: item.nombre, desc: item.desc,  });
+    setNewNews({ title: item.title, description: item.description,  });
     setEditing(item.id);
   };
 
@@ -74,7 +74,9 @@ function Home() {
     // Lógica para actualizar la noticia en Firestore
     const newsRef = doc(db, 'news', id);
     await updateDoc(newsRef, updatedData);
+    setNewNews({ title: '', description: ''});
     fetchNews(); // Actualiza la lista de noticias
+
   };
 
 
@@ -125,44 +127,48 @@ function Home() {
           )}
 
           {role === 'admin' && (
-            <section id="add-edit-news">
-            <h2>{editing ? 'Editar Noticia' : 'Agregar Noticia'}</h2>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="title"
-                placeholder="Título"
-                value={newNews.title}
-                onChange={handleChange}
-                required
-              />
-              <textarea
-                name="description"
-                placeholder="Descripción"
-                value={newNews.description}
-                onChange={handleChange}
-                required
-              />
-              <div  className="button-container">
-                <button className="button" type="submit">
-                  {editing ? 'Guardar Cambios' : 'Agregar Noticia'}
-                </button>
-                {/* Este botón solo se muestra cuando estamos editando */}
-                {editing && (
-                  <button 
-                    type="button" 
-                    className="button" 
-                    onClick={() => {
-                      setEditing(false); // Cambia el estado de editing a false
-                      setNewNews({ title: '', description: '' }); // Limpia los campos
-                    }}
-                  >
-                    Volver a Añadir Noticia
-                  </button>
-                )}
-              </div>
-            </form>
-          </section>
+           <section id="add-edit-news">
+           <h2>{editing ? 'Editar Noticia' : 'Agregar Noticia'}</h2>
+           <form onSubmit={handleSubmit}>
+             {/* Contenedor para los campos de entrada */}
+             <div className="input-container">
+               <input
+                 type="text"
+                 name="title"
+                 placeholder="Título"
+                 value={newNews.title}
+                 onChange={handleChange}
+                 required
+               />
+               <textarea
+                 name="description"
+                 placeholder="Descripción"
+                 value={newNews.description}
+                 onChange={handleChange}
+                 required
+               />
+             </div>
+         
+             {/* Contenedor para los botones */}
+             <div className="button-container">
+               <button className="button" type="submit">
+                 {editing ? 'Guardar Cambios' : 'Agregar Noticia'}
+               </button>
+               {editing && (
+                 <button
+                   type="button"
+                   className="button"
+                   onClick={() => {
+                     setEditing(false); // Cambia el estado de editing a false
+                     setNewNews({ title: '', description: '' }); // Limpia los campos
+                   }}
+                 >
+                   Añadir Noticia
+                 </button>
+               )}
+             </div>
+           </form>
+         </section>
           
           
           )}

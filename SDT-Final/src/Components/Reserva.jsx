@@ -263,19 +263,28 @@ const generarCodigoReserva = (contador) => {
   const filteredMenuItems = menuItems.filter(item => item.Tipo === selectedCategory);
 
   const addDish = (item) => {
+    const cantidad = cantidadSeleccionada[item.id];
+  
+    // Verifica si la cantidad es un número válido y mayor que 0
+    if (isNaN(cantidad) || cantidad < 1) {
+      alert("Por favor, selecciona una cantidad mayor a 0.");
+      return; // No agrega el plato si la cantidad es inválida
+    }
+  
     // Verifica si el plato ya está en la lista
     const existingDish = platosSeleccionados.find(plato => plato.id === item.id);
     if (existingDish) {
       // Si el plato ya está, aumenta la cantidad
-      existingDish.cantidad += cantidadSeleccionada[item.id];
+      existingDish.cantidad += cantidad;
     } else {
       // Si el plato no está, lo agrega con la cantidad seleccionada
-      platosSeleccionados.push({ ...item, cantidad: cantidadSeleccionada[item.id] });
+      platosSeleccionados.push({ ...item, cantidad });
     }
-    
+  
     // Llama a calPres para recalcular el presupuesto
     calPres();
   };
+  
 
   const calPres = () => {
     let total = 0;
@@ -331,19 +340,26 @@ const generarCodigoReserva = (contador) => {
                                     <label htmlFor="cantidad">Cantidad: </label>
                                     <input
                                       id={`cantidad-${item.id}`}
+                                      required
                                       type="number"
-                                      min={0}
+                                      min={1}  // Asegura que la cantidad mínima sea 1
                                       max={15}
                                       value={cantidadSeleccionada[item.id] || ''}
-                                      onChange={(e) => handleCantidadChange(item.id, parseInt(e.target.value, 10) || 0)}
+                                      onChange={(e) => handleCantidadChange(item.id, isNaN(parseInt(e.target.value, 10)) ? 0 : parseInt(e.target.value, 10))} // Validación
                                     />
                                     </div>
                                     
-                                    <button type="button"
-                                        onClick={() => addDish(item)}
-                                    >
-                                        Agregar plato
-                                      </button>
+                                    <button
+                                    type="button"
+                                    onClick={() => addDish(item)}
+                                    disabled={cantidadSeleccionada[item.id] < 1 || cantidadSeleccionada[item.id] === ''} // Deshabilita el botón si la cantidad es menor a 1 o si está vacío
+                                  >
+                                    Agregar plato
+                                  </button>
+
+                                  {(cantidadSeleccionada[item.id] < 1 || cantidadSeleccionada[item.id] === '') && (
+        <p className="warning">Por favor, selecciona una cantidad mayor a 0.</p> // Muestra el mensaje si la cantidad es menor a 1 o está vacío
+      )}
                                   </div>
                                  
                               </div>
@@ -369,7 +385,6 @@ const generarCodigoReserva = (contador) => {
                     <button type='button' onClick={()=>(
                       handleConfrimationReserv()
                       )}>Confirmar platos</button>
-                  <button  type='button' onClick={handleVolverMesas}>Volver atras</button>
                   </div> 
                 </div>
               </div>
@@ -429,8 +444,6 @@ const generarCodigoReserva = (contador) => {
             </button>
           ))}
         </div>
-      
-      
               <button onClick={handleReserva}>Cancelar</button>
               {mesaSeleccionada && <button onClick={handleMostrarPreseleccion}>Confirmar Mesa</button>}
             </div>

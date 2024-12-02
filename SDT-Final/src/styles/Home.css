@@ -200,34 +200,59 @@ li{
 }
 
 /*edicion news*/
-
 #add-edit-news {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Asegura que los elementos principales estén en columnas */
     align-items: center;
+    width: 100%;
 }
 
 #add-edit-news form {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column; /* Para organizar los elementos dentro del formulario */
+    align-items: center;
     width: 100%;
+}
+
+#add-edit-news .input-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem; /* Espacio entre los campos */
+    width: 100%; /* Asegura que ocupe el ancho completo */
+    margin-bottom: 1rem; /* Espacio entre los campos y los botones */
 }
 
 #add-edit-news input, 
 #add-edit-news textarea {
     border-radius: 10px;
-    width: 30%; /* Puedes ajustar el ancho según lo que necesites */
+    width: 40%; /* Ajusta según el diseño que prefieras */
     background-color: whitesmoke;
     color: #202020;
-    margin: 0.5rem; /* Espacio entre los elementos */
     padding: 10px;
 }
 
-#add-edit-news button {
-    width: 20%; /* Botón a la derecha */
-    margin-left: 1rem; /* Espacio entre los botones */
+#add-edit-news textarea{
+    height: 100px;
+    resize: none;
 }
+
+#add-edit-news .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem; /* Espacio entre los botones */
+    width: 100%;
+}
+
+#add-edit-news button {
+    border-radius: 10px;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+
+
 
 #add-edit-news ::placeholder {
     color: #202020;
