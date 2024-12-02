@@ -4,7 +4,7 @@ body  {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
+  margin-top: 4%;
 }
 
 .container-form {
@@ -16,13 +16,21 @@ body  {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.forget{
+  cursor: pointer;
+}
+
+.forget:hover{
+  color: #007bff;
+}
 h2 {
   text-align: center;
   color: whitesmoke;
+  font-size: medium;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   text-align: center;
 }
 
@@ -49,11 +57,11 @@ input[type="tel"]:focus {
 .btns {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 button {
-  padding: 10px 15px;
+  padding: 1  0px 10px;
   border: none;
   border-radius: 4px;
   color: white;

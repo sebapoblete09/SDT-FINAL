@@ -2,7 +2,7 @@
 import React, { useState , useEffect} from 'react';
 import { useNavigate,  } from 'react-router-dom';
 import { auth } from '../Firebase/firebaseconfig';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification,sendPasswordResetEmail } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore'; 
 import { db } from '../Firebase/firebaseconfig'; 
 import '../styles/login.css';
@@ -10,6 +10,7 @@ import '../styles/login.css';
 function Login() {
 
   const [isLoginVisible, setIsLoginVisible] = useState(true); // Estado para controlar la visibilidad
+  const [isForgotPasswordVisible, setIsForgotPasswordVisible] = useState(false); // Nuevo estado para mostrar el formulario de recuperación de contraseña
   const [correo, setCorreo] = useState('');
   const [contraseña, setContraseña] = useState('');
   const [nombre, setNombre] = useState('');
@@ -23,6 +24,7 @@ function Login() {
 
   const handleRegisterClick = () => {
     setIsLoginVisible(false); // Mostrar el formulario de registro
+    setIsForgotPasswordVisible(false)
   };
 
   const handleBackToLoginClick = () => {
@@ -70,7 +72,7 @@ function Login() {
         alert("Contraseña incorrecta.");
       } else {
         console.error("Error al iniciar sesión:", error);
-        alert(`Error al iniciar sesión: ${error.message}`);
+        alert(`Error al iniciar sesión: Intenta nuevamente`);
       }
     }
   };
@@ -112,6 +114,23 @@ function Login() {
       }
     } catch (error) {
       console.error("Error al iniciar sesión con Google:", error.message);
+    }
+  };
+  const handleForgotPasswordClick = () => {
+    setIsForgotPasswordVisible(true); // Muestra el formulario de recuperación de contraseña
+    setIsLoginVisible(false); // Oculta el formulario de inicio de sesión
+  };
+
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    try {
+      await sendPasswordResetEmail(auth, correo);
+      alert("Te hemos enviado un correo para restablecer tu contraseña.");
+      setIsForgotPasswordVisible(false); // Oculta el formulario después de enviar el correo
+      setIsLoginVisible(true); // Vuelve a mostrar el formulario de inicio de sesión
+    } catch (error) {
+      console.error("Error al enviar el correo de recuperación:", error.message);
+      alert(`Error al enviar el correo de recuperación: ${error.message}`);
     }
   };
 
@@ -201,66 +220,149 @@ function Login() {
   
   return (
     <div className='container-form'>
-      {isLoginVisible ? (
+      {isGoogleUser ? (
+        <form onSubmit={handleGoogleUserData}>
+          <h2>Ingresa tu número de teléfono</h2>
+          <label htmlFor="telefono">Celular:</label>
+          <input
+            type="tel"
+            id="telefono"
+            value={telefono}
+            onChange={(e) => settelefono(e.target.value)}
+            maxLength="9"
+            required
+          />
+  
+          <div className="btns">
+            <button type="submit">Guardar Información</button>
+            <button type="button" onClick={() => setIsGoogleUser(false)}>Cancelar</button>
+          </div>
+        </form>
+      ) : isLoginVisible ? (
         <>
-          <h2>¡Bienvenido!</h2>
-          <span>Inicia sesión para realizar una reserva</span>
-          <form onSubmit={handleLogin}>
+          <div>
+            <h2>¡Bienvenido!</h2>
+            <span>Inicia sesión para realizar una reserva</span>
+            <form onSubmit={handleLogin}>
+              <div className="form-group">
+                <input
+                  type="email"
+                  value={correo}
+                  onChange={(e) => setCorreo(e.target.value)}
+                  placeholder="Correo Electrónico"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="password"
+                  value={contraseña}
+                  onChange={(e) => setContraseña(e.target.value)}
+                  placeholder="Contraseña"
+                  required
+                />
+                <span
+                  className='forget'
+                  id="olvido-password"
+                  onClick={handleForgotPasswordClick}
+                >
+                  ¿Olvidaste tu contraseña?
+                </span>
+              </div>
+              <div className="btns">
+                <button type="submit" id="iniciar-sesion">Iniciar Sesión</button>
+                <button type="button" id="registrarse" onClick={handleRegisterClick}>Registrarse</button>
+                <button type="button" id="google-login" onClick={handleGoogleLogin}>Iniciar sesión con Google</button>
+              </div>
+            </form>
+          </div>
+        </>
+      ) : isForgotPasswordVisible ? (
+        <>
+          <h2>Recuperar Contraseña</h2>
+          <form onSubmit={handlePasswordReset}>
             <div className="form-group">
-              <input type="email" value={correo} onChange={(e) => setCorreo(e.target.value)} placeholder="Correo Electrónico" required />
-            </div>
-            <div className="form-group">
-              <input type="password" value={contraseña} onChange={(e) => setContraseña(e.target.value)} placeholder="Contraseña" required />
+              <input
+                type="email"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                placeholder="Correo Electrónico"
+                required
+              />
             </div>
             <div className="btns">
-              <button type="submit" id="iniciar-sesion">Iniciar Sesión</button>
-              <button type="button" id="registrarse" onClick={handleRegisterClick}>Registrarse</button>
-              <button type="button" id="google-login" onClick={handleGoogleLogin}>Iniciar sesión con Google</button>
+              <button type="submit" id="recuperar">Recuperar Contraseña</button>
+              <button type="button" onClick={handleBackToLoginClick}>Cancelar</button>
             </div>
           </form>
         </>
       ) : (
         <>
-          <h2>¡Regístrate!</h2>
-          <span>Crea una cuenta para realizar una reserva más fácil</span>
-          <form onSubmit={handleRegister}>
-            <label htmlFor="Nombre">Nombre</label>
-            <input type="text" id="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Nombre" required />
-
-            <label htmlFor="Apellido">Apellido</label>
-            <input type="text" id="Apellido" value={apellido} onChange={(e) => setApellido(e.target.value)} placeholder="Apellido" required />
-
-            <label htmlFor="celular">Celular:</label>
-            <input type="tel" id="celular" value={telefono} onChange={(e) => settelefono(e.target.value)} maxLength="9" required />
-
-            <label htmlFor="Correo">Correo Electrónico</label>
-            <input type="email" id="Correo" value={correo} onChange={(e) => setCorreo(e.target.value)} placeholder="ejemplo@gmail.com" required />
-
-            <label htmlFor="password">Contraseña</label>
-            <input type="password" id="password" value={contraseña} onChange={(e) => setContraseña(e.target.value)} maxLength="9" required />
-
-            <div className="btns">
-              <button type="submit" id="crear-cuenta">Crear Cuenta</button>
-              <button type="button" id="volver" onClick={handleBackToLoginClick}>Volver a inicio de sesión</button>
-            </div>
-          </form>
+          <div>
+            <h2>¡Regístrate!</h2>
+            <span>Crea una cuenta para realizar una reserva más fácil</span>
+            <form onSubmit={handleRegister}>
+              <label htmlFor="Nombre">Nombre</label>
+              <input
+                type="text"
+                id="Nombre"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                placeholder="Nombre"
+                required
+              />
+  
+              <label htmlFor="Apellido">Apellido</label>
+              <input
+                type="text"
+                id="Apellido"
+                value={apellido}
+                onChange={(e) => setApellido(e.target.value)}
+                placeholder="Apellido"
+                required
+              />
+  
+              <label htmlFor="celular">Celular:</label>
+              <input
+                type="tel"
+                id="celular"
+                value={telefono}
+                onChange={(e) => settelefono(e.target.value)}
+                maxLength="9"
+                required
+              />
+  
+              <label htmlFor="Correo">Correo Electrónico</label>
+              <input
+                type="email"
+                id="Correo"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                placeholder="ejemplo@gmail.com"
+                required
+              />
+  
+              <label htmlFor="password">Contraseña</label>
+              <input
+                type="password"
+                id="password"
+                value={contraseña}
+                onChange={(e) => setContraseña(e.target.value)}
+                maxLength="9"
+                required
+              />
+  
+              <div className="btns">
+                <button type="submit" id="crear-cuenta">Crear Cuenta</button>
+                <button type="button" id="volver" onClick={handleBackToLoginClick}>Volver a inicio de sesión</button>
+              </div>
+            </form>
+          </div>
         </>
       )}
-
-      {isGoogleUser && (
-              <form onSubmit={handleGoogleUserData}>
-                <h2>Ingresa tu número de teléfono</h2>
-                <label htmlFor="telefono">Celular:</label>
-                <input type="tel" id="telefono" value={telefono} onChange={(e) => settelefono(e.target.value)} maxLength="9" required />
-
-                <div className="btns">
-                  <button type="submit">Guardar Información</button>
-                  <button type="button" onClick={() => setIsGoogleUser(false)}>Cancelar</button>
-                </div>
-              </form>
-            )}
-          </div>
+    </div>
   );
+  
 }
 
 export default Login;
