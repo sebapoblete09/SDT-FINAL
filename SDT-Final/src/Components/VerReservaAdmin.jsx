@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, updateDoc,doc } from 'firebase/firestore';
 import { db } from '../Firebase/firebaseconfig';
 import '../styles/reserva.css';
+import emailjs from 'emailjs-com';
 import ReservCard from './reservCard';
 
 function VerReservasAdmin() {
@@ -72,6 +73,46 @@ function VerReservasAdmin() {
     setShowModal(false);
   };
 
+  const handleCancel = async (id) => {
+    const confirmarCancelacion = window.confirm("¿Estás seguro de que deseas cancelar esta reserva?");
+
+  if (!confirmarCancelacion) {
+    return; // Si el usuario cancela, no se ejecuta el código siguiente
+  }
+    try {
+      const reservaRef = doc(db, "reservas", id);
+      const reservaCancelada = reservas.find(reserva => reserva.id === id);
+      await updateDoc(reservaRef, { estado: "cancelada" });
+      setReservas(reservas.map(reserva => 
+        reserva.id === id ? { ...reserva, estado: "cancelada" } : reserva
+      ));
+      alert("Reserva cancelada exitosamente.");
+      
+      let messagueComfirm = `Nombre: ${reservaCancelada.nombre}\nEmail: ${reservaCancelada.correo}\nTelefono: ${reservaCancelada.telefono}\nTamaño del grupo: ${reservaCancelada.grupo}\nFecha: ${reservaCancelada.fecha}\nHorario: ${reservaCancelada.horario}\nN° de mesa: ${reservaCancelada.mesa}`;
+      messagueComfirm+= "\n\nLamentamos la cancelación de su reserva, esperamos que nos visite de nuevo.";
+
+      // Configura los datos del mensaje que se envía con EmailJS
+      const templateParams = {
+        messague: messagueComfirm,
+        subject: "Cancelación de reserva!!",
+        email: reservaCancelada.correo,
+      };
+
+      // Reemplaza 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', y 'YOUR_USER_ID' con tus valores de EmailJS
+      emailjs.send('service_4ie5ez4', 'template_rqpmnbl', templateParams, 'msvOlm1YjIR6h1Xs5')
+        .then((response) => {
+          console.log('Reserva enviada con éxito:', response.status, response.text);
+        })
+        .catch((error) => {
+          console.error('Error al enviar el correo:', error);
+          alert('Hubo un error al enviar el correo');
+        });
+    } catch (error) {
+      console.error("Error al cancelar la reserva: ", error);
+      alert("Hubo un problema al cancelar la reserva.");
+    }
+  };
+
   return (
     <main className="reservation-list">
       {isAuthenticated ? (
@@ -106,6 +147,13 @@ function VerReservasAdmin() {
                   <div className="reservation-info">
                     <p><strong>Estado:</strong> {reserva.estado}</p>
                     <button className='delete-button' onClick={() => openModal(reserva.platos)}>Ver Más</button>
+                    {reserva.estado !== "cancelada" && (
+                      <div className='Button-container'>
+                        <button className="delete-button" onClick={() => handleCancel(reserva.id)}>
+                          Cancelar
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

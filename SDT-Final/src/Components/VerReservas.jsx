@@ -57,6 +57,11 @@ function VerReservas() {
   );
 
   const handleCancel = async (id) => {
+    const confirmarCancelacion = window.confirm("¿Estás seguro de que deseas cancelar esta reserva?");
+
+  if (!confirmarCancelacion) {
+    return; // Si el usuario cancela, no se ejecuta el código siguiente
+  }
     try {
       const reservaRef = doc(db, "reservas", id);
       const reservaCancelada = reservas.find(reserva => reserva.id === id);
